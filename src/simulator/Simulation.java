@@ -16,6 +16,7 @@ public class Simulation {
 		
 		rcoord.initializeNextStep("123");
 		rcoord.initializeNextStep("25");
-	}
+		
 	
+	}
 }

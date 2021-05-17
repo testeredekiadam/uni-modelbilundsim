@@ -1,12 +1,11 @@
 package simulator;
 
 public abstract class Event {
-	private long time;
 	private long duration;
 	
-	public Event(long time, long duration) {
-		this.time = time;
+	public Event(long duration) {
+		this.duration = duration;
 	}
 	
-	public abstract String trigger();
+	public abstract String trigger(long duration, String nZustand);
 }

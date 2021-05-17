@@ -12,15 +12,17 @@ public class RootCoordinator extends Node{
 	@Override
 	public void receiveMessage(String nachricht) {
 		String ntime = "2"; 												//TODO
+		
+	
 		if(nachricht.split(",")[0].equals("y")) {
 			for(Node node : children) {
 				
 				node.receiveMessage(String.format("x,%s", ntime)); 			//TODO control ntime
 				System.out.println(nachricht.split(",")[1]);			    //  -> trial line works fine
+				}
 			}
-		}
-		
- // RootCoordinator kann keine x-Nachricht kriegen
+			
+	 // RootCoordinator kann keine x-Nachricht kriegen
 		
 		
 		else if(nachricht.split(",")[0].equals("d")) {

@@ -2,12 +2,12 @@ package simulator;
 
 public class ExternalEvent extends Event{
 	
-	public ExternalEvent(long time, long duration) {
-		super(time, duration);
+	public ExternalEvent(long duration) {
+		super(duration);
 	}
 
 
-	public String trigger() {
+	public String trigger(long duration, String nZustand) {
 		System.out.println("Hallo external event");
 		return "d";
 	}
