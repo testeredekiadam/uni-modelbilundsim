@@ -1,3 +1,9 @@
+/*
+ Hier hab ich nur irgnedwas zusammengemasht da weiß ich gar nichts.
+ Ich habe aber das gefühl dass man das field hier schon anlegen muss um diese feld dependecies zu machen
+*/
+
+
 package simulator;
 
 import java.util.ArrayList;
