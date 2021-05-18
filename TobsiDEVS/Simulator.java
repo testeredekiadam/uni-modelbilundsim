@@ -29,7 +29,8 @@ public abstract class Simulator extends Node {
 			
 			// 3. tonie vom aktuellen State herausfinden und
 			// sende ↑d,tonie_i an Vater			
-			parent.receiveMessage("d," + timeAdvance(state));
+			tonie = time + timeAdvance(state);
+			parent.receiveMessage("d," + tonie);
 		}
 		
 		// x-Nachricht
