@@ -20,7 +20,7 @@ public class Simulator extends Node{
 			//führe lambda aus, Ausgabe an Parent-node senden
 			lambda("21");
 			//Zustandsübergang und an Vater senden
-			parent.receiveMessage(internal.trigger(5, "d"));
+			parent.receiveMessage(internal.trigger("d", 5));
 																												//change 21 to y_i
 			//
 			
@@ -28,7 +28,7 @@ public class Simulator extends Node{
 		//x-Nachricht triggert External Event 
 		} else if(nachricht.split(",")[0].equals("x")) {
 			Event external = new ExternalEvent(Long.parseLong(nachricht.split(",")[1]));
-			external.trigger(5, "d");
+			external.trigger("d", 5);
 			tonie = time + tAdvance;
 			parent.receiveMessage(String.format("d,%d", tonie));
 		}
@@ -42,6 +42,7 @@ public class Simulator extends Node{
 	public long timeAdvance(String zustand) {
 		return 13;//TODO
 	}
+	
 	public void lambda(String zustand) {
 		if(zustand.equals("*")) {
 			parent.receiveMessage("y, y_i");

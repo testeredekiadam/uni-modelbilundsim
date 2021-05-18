@@ -3,6 +3,7 @@ package modell;
 import simulator.*;
 
 public class Region extends Simulator{
+	protected long tonie;
 	
 	public Region(Node parent, String name) {
 		super(parent, name);
@@ -13,8 +14,10 @@ public class Region extends Simulator{
 		
 		//interne Ereignisse
 		if(regionZstd.equals("Wood")) {
-			return;//keine interne
+			return;//keine Ereignisse
 		}else if(regionZstd.equals("Meadow")) {
+			tonie = 5;
+			
 			
 			
 			//5++ Meadow -> Wood

@@ -7,7 +7,7 @@ public class ExternalEvent extends Event{
 	}
 
 
-	public String trigger(long duration, String nZustand) {
+	public String trigger(String nZustand, long duration) {
 		System.out.println("Hallo external event");
 		return "d";
 	}

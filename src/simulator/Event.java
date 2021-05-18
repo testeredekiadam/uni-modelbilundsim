@@ -7,5 +7,5 @@ public abstract class Event {
 		this.duration = duration;
 	}
 	
-	public abstract String trigger(long duration, String nZustand);
+	public abstract String trigger(String nZustand, long duration);
 }

@@ -6,11 +6,13 @@ public class InternalEvent extends Event{
 	}
 
 //duration and new S
-	public String trigger(long duration, String nZustand) {
+	@Override
+	public String trigger(String nZustand, long duration) {
 		
 		return String.format("%d,%s", duration, nZustand);
 		
 	}
+
 
 		
 }
