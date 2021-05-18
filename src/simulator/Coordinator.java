@@ -1,6 +1,6 @@
 package simulator;
 
-public class Coordinator extends Node {
+public abstract class Coordinator extends Node {
 	
 	
 	

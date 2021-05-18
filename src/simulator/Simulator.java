@@ -1,8 +1,9 @@
 package simulator;
 
-public class Simulator extends Event{
+public abstract class Simulator extends Node{
 	
 	private String name;
+	private String state;
 	public String[] xInputEvent;
 	public String[] xOutputEvent;
 	
@@ -11,15 +12,24 @@ public class Simulator extends Event{
 		children = null;
 		
 	}
-
+	
+	public String getState() {
+		return state;
+	}
+	
+	public void setState(String newState) {
+		this.state = newState;
+	}
+	
+	
 	@Override
 	public void receiveMessage(String nachricht) {
-		String state;
+		
 		
 		//*-Nachricht triggert Internal Event
 		if(nachricht.split(",")[0].equals("*")) {
 			
-			state = nachricht.split(",")[0];
+			
 			
 			//führe lambda aus, Ausgabe an Parent-node senden
 			parent.receiveMessage(String.format("y,%s", lambda(state)));
@@ -48,28 +58,12 @@ public class Simulator extends Event{
 	}
 	
 	
-	public long timeAdvance(String zustand) {
-		return 13;//TODO
-	}
+	public abstract String lambda(String state);
 	
+	public abstract String delta_int(String state);
 	
-	public String lambda(String zustand) {
-		
-		return "y_i";
-	}
-
+	public abstract String delta_ext(String state, long elapsedTime, String x);
 	
-	@Override
-	public String delta_int(String nachricht) {
-		
-		return "d";
-	}
-
-	
-	@Override
-	public String delta_ext(String state, long elapsedTime, String x) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public abstract long timeAdvance(String state);
 	 
 }

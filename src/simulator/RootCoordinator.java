@@ -1,6 +1,6 @@
 package simulator;
 
-public class RootCoordinator extends Node{
+public abstract class RootCoordinator extends Node{
 	
 	public RootCoordinator(String name) {
 		super(null, name);
