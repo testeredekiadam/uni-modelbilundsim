@@ -1,11 +1,12 @@
 package modell;
 
-import simulator.Event;
+import simulator.*;
 
-import simulator.InternalEvent;
-
-public class Region {
+public class Region extends Simulator{
 	
+	public Region(Node parent, String name) {
+		super(parent, name);
+	}
 	
 	String regionen[] = new String[] {"Wood","Meadow","Fire"};
 	public void regeln(String regionZstd) {

@@ -2,8 +2,8 @@ package simulator;
 
 public class RootCoordinator extends Node{
 	
-	public RootCoordinator() {
-		super(null);
+	public RootCoordinator(String name) {
+		super(null, name);
 	}
 	
 

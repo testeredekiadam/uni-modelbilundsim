@@ -2,9 +2,11 @@ package simulator;
 
 public class Simulator extends Node{
 	
-	public Simulator(Node parent) {
-		super(parent);
+	private String name;
+	public Simulator(Node parent, String name) {
+		super(parent, name);
 		children = null;
+		
 	}
 
 	@Override

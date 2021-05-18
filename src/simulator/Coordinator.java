@@ -4,8 +4,8 @@ public class Coordinator extends Node {
 	
 	
 	
-	public Coordinator(Node parent) {
-		super(parent);
+	public Coordinator(Node parent, String name) {
+		super(parent, name);
 	}
 	
 	@Override
