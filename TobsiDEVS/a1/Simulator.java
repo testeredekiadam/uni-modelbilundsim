@@ -1,12 +1,11 @@
 package simulator;
 
-public abstract class Simulator extends Event {
+public abstract class Simulator extends Node {
 	
 	private String name;
 	private String state;
-	public String[] xInputEvent;
-	public String[] xOutputEvent;
 	
+	//public List<String> xOutputEven = new ArrayList<String>();
 	
 	public Simulator(Node parent, String name) {
 		super(parent, name);
@@ -26,10 +25,10 @@ public abstract class Simulator extends Event {
 			
 			// 2.neuen State anhand δ_int herausfinden
 			// internen Zustandsübergang ausführen
-			state = delta_int(state);
+			delta_int(state);
 			
 			// 3. tonie vom aktuellen State herausfinden und
-			// sende ↑d,tonie_i an Vater			
+			// sende ↑d,tonie_i an Vater
 			tonie = time + timeAdvance(state);
 			parent.receiveMessage("d," + tonie);
 		}
@@ -38,7 +37,7 @@ public abstract class Simulator extends Event {
 		else if (nachricht.split(",")[0].equals("x")) {
 			
 			// 1. externen Zustandsübergang ausführen
-			state = delta_ext(state, elapsedTime, x);
+			delta_ext(state, elapsedTime, x);
 			
 			// 2. berechne tonie, tonie = t + timeAdvance(s)
 			tonie = time + timeAdvance(state);
@@ -48,8 +47,14 @@ public abstract class Simulator extends Event {
 			
 		}
 	}
-
 	
+	public abstract String lambda(String state);
+	
+	public abstract void delta_int(String state);
+	
+	public abstract void delta_ext(String state, long elapsedTime, String x);
+	
+	public abstract long timeAdvance(String state);
 }
 
 /*
