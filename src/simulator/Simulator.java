@@ -25,6 +25,7 @@ public abstract class Simulator extends Node{
 	@Override
 	public void receiveMessage(String nachricht) {
 		
+		String tempState = getState();
 		
 		//*-Nachricht triggert Internal Event
 		if(nachricht.split(",")[0].equals("*")) {
@@ -32,21 +33,21 @@ public abstract class Simulator extends Node{
 			
 			
 			//führe lambda aus, Ausgabe an Parent-node senden
-			parent.receiveMessage(String.format("y,%s", lambda(state)));
+			parent.receiveMessage(String.format("y,%s", lambda(tempState)));
 			
 			//Zustandsübergang und an Vater senden
-			state = delta_int(state);
-			tonie = time + timeAdvance(state);
-			parent.receiveMessage(String.format("%s,%d", state, tonie));
+			tempState = delta_int(tempState);
+			tonie = time + timeAdvance(tempState);
+			parent.receiveMessage(String.format("%s,%d", tempState, tonie));
 			//
 			
 			
 		//x-Nachricht triggert External Event 
 		} else if(nachricht.split(",")[0].equals("x")) {
 			
-			state = nachricht.split(",")[0];
 			
-			state = delta_ext(state, elapsedTime, state);
+			
+			state = delta_ext(tempState, elapsedTime, state);
 			tonie = time + tAdvance;
 			parent.receiveMessage(String.format("d,%d", tonie));
 		}
