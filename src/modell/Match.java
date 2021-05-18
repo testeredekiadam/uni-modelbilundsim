@@ -4,7 +4,7 @@ import simulator.*;
 
 public class Match extends Simulator{
 
-	public Match(Node parent, String name) {
+	public Match(Coordinator parent, String name) {
 		super(parent, name);
 		
 	}
@@ -12,25 +12,23 @@ public class Match extends Simulator{
 	@Override
 	public String lambda(String state) {
 		// TODO Auto-generated method stub
-		return null;
+		return "Fire-Message";
 	}
 
 	@Override
-	public String delta_int(String state) {
-		// TODO Auto-generated method stub
-		return null;
+	public void delta_int(String state) {
+
 	}
 
 	@Override
-	public String delta_ext(String state, long elapsedTime, String x) {
-		// TODO Auto-generated method stub
-		return null;
+	public void delta_ext(String state, long elapsedTime, String x) {
+
 	}
 
 	@Override
 	public long timeAdvance(String state) {
-		// TODO Auto-generated method stub
-		return 0;
+
+		return 10;
 	}
 
 }

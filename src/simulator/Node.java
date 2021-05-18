@@ -8,12 +8,12 @@ public abstract class Node {
 	protected String name;
 	protected List<Node> children = new ArrayList<Node>();
 	
-	protected long tonie;
+	public long tonie;
 	protected long tAdvance;
 	protected long time;
 	protected long elapsedTime;
 	
-	public Node(Node parent, String name) {
+	public Node(Node parent, String name, long runtime) {
 		this.parent = parent;
 		this.name = name;
 	}

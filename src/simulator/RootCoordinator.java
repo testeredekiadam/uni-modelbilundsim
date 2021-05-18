@@ -1,48 +1,76 @@
 package simulator;
 
-public abstract class RootCoordinator extends Node{
+public class RootCoordinator extends Coordinator{
 	
-	public RootCoordinator(String name) {
+	private long runtime;
+	private long initTime = 0;
+
+
+
+	public RootCoordinator(String name, long runtime) {
 		super(null, name);
+		setTime(runtime);
+	}
+	
+	public void setTime(long runtime) {
+		this.runtime = runtime;
+	}
+	
+	public long getTime() {
+		return runtime;
+	}
+	
+	
+	public void setInitTime(long initime) {
+		initime = getInitTime() + initime;
+		this.initTime = initime;
+	}
+	
+	public long getInitTime() {
+		return initTime;
 	}
 	
 
-	
+
 	//Nachricht aus Kind
 	@Override
 	public void receiveMessage(String nachricht) {
-		String ntime = "2"; 												//TODO
 		
-	
-		if(nachricht.split(",")[0].equals("y")) {
-			for(Node node : children) {
+		
+		while(getInitTime() < getTime()) {
+			
+			//Initialisiert den nächsten Schritt mit einer *-Nachricht
+			if(nachricht.isEmpty()) {
+				for(Node node : children) {
+					node.receiveMessage(String.format("*,%d", getInitTime()));
+				}
+			}
+		
+		//
+			if(nachricht.split(",")[0].equals("y")) {
+				for(Node node : children) {
+					node.receiveMessage(String.format("x,%s", getInitTime()));		    
+					}
+				}
 				
-				node.receiveMessage(String.format("x,%s", ntime)); 			//TODO control ntime
-				System.out.println(nachricht.split(",")[1]);			    //  -> trial line works fine
+		 // RootCoordinator kann keine x-Nachricht kriegen
+			
+			
+			else if(nachricht.split(",")[0].equals("d")) {
+				for(Node node : children) {
+					node.receiveMessage(nachricht);
 				}
 			}
 			
-	 // RootCoordinator kann keine x-Nachricht kriegen
-		
-		
-		else if(nachricht.split(",")[0].equals("d")) {
-			for(Node node : children) {
-				node.receiveMessage(nachricht);
-			}
 		}
+
 	}
 
 	
 	
 	//Initialisiert den nächsten Schritt mit einer *-Nachricht
-	public void initializeNextStep(String time) {
-		
-		String initNachricht = String.format("*,%s", time);
-		
-		for(Node node : children) {
-			node.receiveMessage(initNachricht);
-		}
-	}
+
+	
 
 
 }

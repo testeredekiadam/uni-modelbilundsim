@@ -2,13 +2,15 @@ package simulator;
 
 public abstract class Simulator extends Node{
 	
+	private static long elapsedTime;
 	private String name;
 	private String state;
+	private String actstate;
 	public String[] xInputEvent;
 	public String[] xOutputEvent;
 	
-	public Simulator(Node parent, String name) {
-		super(parent, name);
+	public Simulator(Coordinator parent, String name) {
+		super(parent, name, elapsedTime);
 		children = null;
 		
 	}
@@ -21,34 +23,39 @@ public abstract class Simulator extends Node{
 		this.state = newState;
 	}
 	
+
 	
 	@Override
 	public void receiveMessage(String nachricht) {
 		
-		String tempState = getState();
+		
 		
 		//*-Nachricht triggert Internal Event
 		if(nachricht.split(",")[0].equals("*")) {
-			
+			time = Long.parseLong(nachricht.split(",")[1]);
 			
 			
 			//führe lambda aus, Ausgabe an Parent-node senden
-			parent.receiveMessage(String.format("y,%s", lambda(tempState)));
+			parent.receiveMessage(String.format("y,%s", lambda(getState())));
 			
 			//Zustandsübergang und an Vater senden
-			tempState = delta_int(tempState);
-			tonie = time + timeAdvance(tempState);
-			parent.receiveMessage(String.format("%s,%d", tempState, tonie));
+			delta_int(getState());
+			tonie = time + timeAdvance(getState());
+			setState(getState());
+			parent.receiveMessage(String.format("d,%d", getState(), tonie));
 			//
 			
 			
 		//x-Nachricht triggert External Event 
 		} else if(nachricht.split(",")[0].equals("x")) {
+		
+			String x = nachricht.split(",")[1];
 			
 			
+			delta_ext(getState(), elapsedTime, x);
 			
-			state = delta_ext(tempState, elapsedTime, state);
-			tonie = time + tAdvance;
+			tonie = time + timeAdvance(getState());
+			setState(getState());
 			parent.receiveMessage(String.format("d,%d", tonie));
 		}
 	}
@@ -61,9 +68,10 @@ public abstract class Simulator extends Node{
 	
 	public abstract String lambda(String state);
 	
-	public abstract String delta_int(String state);
+	public abstract void delta_int(String state);
+
 	
-	public abstract String delta_ext(String state, long elapsedTime, String x);
+	public abstract void delta_ext(String state, long elapsedTime, String x);
 	
 	public abstract long timeAdvance(String state);
 	 
