@@ -14,7 +14,7 @@ public abstract class Coordinator extends Node {
 			
 			// 1. wähle mit select das Kind dessen tonie = t
 			Node select_t = null;
-			select_t = select(Long.parseLong(nachricht.split(",")[1], 10));
+			select_t = select(Long.parseLong(nachricht.split(",")[1]));
 			
 			// 2. weiterleiten (↓*, t) an das Kind mit tonie = t
 			select_t.receiveMessage(nachricht);

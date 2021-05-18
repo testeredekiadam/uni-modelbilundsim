@@ -1,8 +1,11 @@
 package simulator;
 
-public class Simulator extends Node{
+public class Simulator extends Event{
 	
 	private String name;
+	public String[] xInputEvent;
+	public String[] xOutputEvent;
+	
 	public Simulator(Node parent, String name) {
 		super(parent, name);
 		children = null;
@@ -11,24 +14,29 @@ public class Simulator extends Node{
 
 	@Override
 	public void receiveMessage(String nachricht) {
-		
-		
+		String state;
 		
 		//*-Nachricht triggert Internal Event
 		if(nachricht.split(",")[0].equals("*")) {
-			Event internal = new InternalEvent(Long.parseLong(nachricht.split(",")[1]));
+			
+			state = nachricht.split(",")[0];
+			
 			//führe lambda aus, Ausgabe an Parent-node senden
-			lambda("21");
+			parent.receiveMessage(String.format("y,%s", lambda(state)));
+			
 			//Zustandsübergang und an Vater senden
-			parent.receiveMessage(internal.trigger("d", 5));
-																												//change 21 to y_i
+			state = delta_int(state);
+			tonie = time + timeAdvance(state);
+			parent.receiveMessage(String.format("%s,%d", state, tonie));
 			//
 			
 			
 		//x-Nachricht triggert External Event 
 		} else if(nachricht.split(",")[0].equals("x")) {
-			Event external = new ExternalEvent(Long.parseLong(nachricht.split(",")[1]));
-			external.trigger("d", 5);
+			
+			state = nachricht.split(",")[0];
+			
+			state = delta_ext(state, elapsedTime, state);
 			tonie = time + tAdvance;
 			parent.receiveMessage(String.format("d,%d", tonie));
 		}
@@ -39,14 +47,29 @@ public class Simulator extends Node{
 		return null;
 	}
 	
+	
 	public long timeAdvance(String zustand) {
 		return 13;//TODO
 	}
 	
-	public void lambda(String zustand) {
-		if(zustand.equals("*")) {
-			parent.receiveMessage("y, y_i");
-		}
+	
+	public String lambda(String zustand) {
+		
+		return "y_i";
+	}
+
+	
+	@Override
+	public String delta_int(String nachricht) {
+		
+		return "d";
+	}
+
+	
+	@Override
+	public String delta_ext(String state, long elapsedTime, String x) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	 
 }

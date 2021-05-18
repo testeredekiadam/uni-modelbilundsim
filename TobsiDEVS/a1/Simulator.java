@@ -1,11 +1,12 @@
 package simulator;
 
-public abstract class Simulator extends Node {
+public abstract class Simulator extends Event {
 	
 	private String name;
 	private String state;
 	public String[] xInputEvent;
 	public String[] xOutputEvent;
+	
 	
 	public Simulator(Node parent, String name) {
 		super(parent, name);
@@ -47,14 +48,8 @@ public abstract class Simulator extends Node {
 			
 		}
 	}
+
 	
-	public abstract String lambda(String state);
-	
-	public abstract String delta_int(String state);
-	
-	public abstract String delta_ext(String state, long elapsedTime, String x);
-	
-	public abstract long timeAdvance(String state);
 }
 
 /*

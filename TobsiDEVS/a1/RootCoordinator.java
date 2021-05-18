@@ -6,6 +6,8 @@ public abstract class RootCoordinator extends Coordinator {
 		super(null, name);
 	}
 	
+
+	
 	public void initializeNextStep() {
 		for(Node node : children) {
 			node.receiveMessage(nachricht);

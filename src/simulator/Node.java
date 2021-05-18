@@ -25,4 +25,6 @@ public abstract class Node {
 	
 	public abstract void receiveMessage(String nachricht);
 	
+
+	
 }

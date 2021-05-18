@@ -1,11 +1,7 @@
-package simulator;
 
-public abstract class Event extends Node{
+public class Event extends Node{
 	
-	public Event(Node parent, String name) {
-		super(parent, name);
-	}
-
+	
 	public abstract String lambda(String state);
 	
 	public abstract String delta_int(String state);
