@@ -1,5 +1,7 @@
 package simulator;
 
+import java.util.*;
+
 public abstract class Coordinator extends Node {
 
 	public Coordinator(Node parent, String name) {
@@ -14,7 +16,7 @@ public abstract class Coordinator extends Node {
 			
 			// 1. wähle mit select das Kind dessen tonie = t
 			Node select_t = null;
-			select_t = select(Long.parseLong(nachricht.split(",")[1]));
+			select_t = select(Long.parseLong(nachricht.split(",")[1], 10));
 			
 			// 2. weiterleiten (↓*, t) an das Kind mit tonie = t
 			select_t.receiveMessage(nachricht);
@@ -65,19 +67,6 @@ public abstract class Coordinator extends Node {
 	
 	
 	// Select-Funktion
-	public Node select(long t) {
-		Node t_select = null;
-		
-		// Wähle Simulator dessen tonie = t
-		for (Node node : children) {
-			if (node.tonie == t) {
-				t_select = node;
-			}
-		}
-		
-		// Prioritätsimplementierung
-		
-		return t_select;
-	}
+	public abstract Node select(long t);
 
 }
