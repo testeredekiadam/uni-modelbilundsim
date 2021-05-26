@@ -1,3 +1,6 @@
 /.metadata/
 /ha2/
 /hausaufgabe3/
+*/.idea/
+*/target/
+*/template.iml
