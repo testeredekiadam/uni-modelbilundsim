@@ -40,9 +40,6 @@ public class DirectMethod {
     }
 
 
-
-
-
     public void directMethod() {
         while(true) {
 
