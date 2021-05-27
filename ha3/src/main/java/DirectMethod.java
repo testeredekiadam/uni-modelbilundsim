@@ -3,8 +3,9 @@ import java.lang.Math;
 
 public class DirectMethod {
 
-    private static int wald = 1000;
-    static int feuer = 1000;
+    int wald;
+    int feuer;
+
 
     public DirectMethod(int wald, int feuer) {
         this.wald = wald;
@@ -13,20 +14,20 @@ public class DirectMethod {
 
 
 
-    public long r_0(int wald, int feuer) {
-        return (wald*20);
+    public long r_0() {
+        return (this.wald*20);
     }
 
-    public double r_1(int wald, int feuer) {
-        return (wald*feuer*0.01);
+    public double r_1() {
+        return (this.wald*this.feuer*0.01);
     }
 
-    public long r_2(int wald, int feuer) {
-        return (feuer*20);
+    public long r_2() {
+        return (this.feuer*20);
     }
 
     public double a_sum() {
-        return (r_0(wald, feuer) + r_1(wald, feuer) + r_2(wald, feuer));
+        return (r_0() + r_1() + r_2());
     }
 
     public void reaktion() {
@@ -34,18 +35,45 @@ public class DirectMethod {
         double rate = 0.5; //Change
         Random random = new Random();
         double y = random.nextDouble();
-        System.out.println(y);
-        x = a_sum() * Math.log(1-y)/(-rate);
-        System.out.println(x);
+
+        x = a_sum() * (Math.log(1-y)/(-rate)); // sometimes gives some values greater than 1. that's a problem.
+
+        System.out.println("wald  " + this.wald);
+        System.out.println("feuer  " + this.feuer);
+
+        System.out.println("wald -> 2 wald  " + r_0());
+        System.out.println("feuer+wald -> 2feuer  " + r_1());
+        System.out.println("feuer ->  " + r_2());
+        System.out.println("sum  " + a_sum());
+
+//        System.out.println("y  " + y);
+        System.out.println("x  " + x);
+
+        if(r_0() > x){
+            this.wald+=1;
+
+        }
+        else if((r_0()+r_1()) > x){
+            this.wald-=1;
+            this.feuer+=1;
+        }
+        else if((r_0()+r_1()+r_2()) > x){
+            this.feuer-=1;
+        }
+
+        System.out.println();
+        System.out.println();
+        System.out.println();
+
     }
 
 
     public void directMethod() {
-        while(true) {
-
-
+        int count = 0;
+        while(count < 10) {
+            reaktion();
+            count++;
 
         }
     }
-
 }
