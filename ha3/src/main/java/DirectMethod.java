@@ -6,13 +6,10 @@ public class DirectMethod {
     int wald;
     int feuer;
 
-
     public DirectMethod(int wald, int feuer) {
         this.wald = wald;
         this.feuer = feuer;
     }
-
-
 
     public long r_0() {
         return (this.wald*20);
@@ -34,21 +31,28 @@ public class DirectMethod {
         double x;
         double rate = 0.5; //Change
         Random random = new Random();
-        double y = random.nextDouble();
+        double y = random.nextFloat();
 
-        x = a_sum() * (Math.log(1-y)/(-rate)); // sometimes gives some values greater than 1. that's a problem.
+        x = (Math.log(1-y))/((-rate)); // sometimes gives some values greater than 1. that's a problem.
+        x = x* a_sum();
+
+        //Now I'm doing something reaally fun. and
+        if(x>a_sum()){
+            x = a_sum() - 1;
+        }
+        //May delete this later
 
         System.out.println("wald  " + this.wald);
         System.out.println("feuer  " + this.feuer);
 
-        System.out.println("wald -> 2 wald  " + r_0());
+/*        System.out.println("wald -> 2 wald  " + r_0());
         System.out.println("feuer+wald -> 2feuer  " + r_1());
         System.out.println("feuer ->  " + r_2());
         System.out.println("sum  " + a_sum());
 
-//        System.out.println("y  " + y);
+        System.out.println("y  " + y);
         System.out.println("x  " + x);
-
+*/
         if(r_0() > x){
             this.wald+=1;
 
@@ -62,15 +66,15 @@ public class DirectMethod {
         }
 
         System.out.println();
-        System.out.println();
-        System.out.println();
+
 
     }
 
-
-    public void directMethod() {
+    public void directMethod(int lim) {
         int count = 0;
-        while(count < 10) {
+
+
+        while(count < lim) {
             reaktion();
             count++;
 
