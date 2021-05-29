@@ -31,21 +31,24 @@ public class DirectMethod {
         double x;
         double rate = 0.5; //Change
         Random random = new Random();
-        double y = random.nextFloat();
+        double y = random.nextDouble();
 
-        x = (Math.log(1-y))/((-rate)); // sometimes gives some values greater than 1. that's a problem.
-        x = x* a_sum();
 
-        //Now I'm doing something reaally fun. and
-        if(x>a_sum()){
-            x = a_sum() - 1;
-        }
-        //May delete this later
+        /*      Explanation:
+        *
+        * Will come here
+        *
+        *
+        *
+        */
+        x = (Math.log(1-(1-Math.exp(-rate))*y))/(-rate); //Works
+        x = a_sum()*x;
 
         System.out.println("wald  " + this.wald);
         System.out.println("feuer  " + this.feuer);
+/*
 
-/*        System.out.println("wald -> 2 wald  " + r_0());
+        System.out.println("wald -> 2 wald  " + r_0());
         System.out.println("feuer+wald -> 2feuer  " + r_1());
         System.out.println("feuer ->  " + r_2());
         System.out.println("sum  " + a_sum());
@@ -53,6 +56,8 @@ public class DirectMethod {
         System.out.println("y  " + y);
         System.out.println("x  " + x);
 */
+
+
         if(r_0() > x){
             this.wald+=1;
 
@@ -81,3 +86,4 @@ public class DirectMethod {
         }
     }
 }
+
