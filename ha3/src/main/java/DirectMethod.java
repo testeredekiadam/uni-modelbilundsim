@@ -55,21 +55,6 @@ public class DirectMethod {
         this.next_time = x;
         x = x * a_sum();
 
-        System.out.println("wald  " + this.wald);
-        System.out.println("feuer  " + this.feuer);
-
-
-        System.out.println("wald -> 2 wald  " + r_0());
-        System.out.println("feuer+wald -> 2feuer  " + r_1());
-        System.out.println("feuer ->  " + r_2());
-        System.out.println("sum  " + a_sum());
-
-        System.out.println("y  " + y);
-        System.out.println("x  " + x);
-        System.out.println("time " + this.time);
-        System.out.println("next time  " + next_time);
-
-
 
         if(r_0() > x){
             this.wald+=1;
@@ -87,8 +72,6 @@ public class DirectMethod {
 
 
     }
-
-
 
 
     public void directMethod(long lim){
