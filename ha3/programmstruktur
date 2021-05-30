@@ -33,9 +33,9 @@ exp(x) = ln(1-y) / (-l) mit
 l -> rate der exponentialgleichung (a_Sum?)
 y -> random Zahl aus (0,1)
 
-
+- Speicherung der Werte zu Simulationszeiten (0.1 Schritte?)
 
 
 // TODO
-- Speicherung der Werte zu Simulationszeiten (0.1 Schritte?)
+
 - Plot
