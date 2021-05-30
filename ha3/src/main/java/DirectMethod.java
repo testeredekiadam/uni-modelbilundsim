@@ -91,7 +91,7 @@ public class DirectMethod {
 
 
 
-    public void directMethod(int lim){
+    public void directMethod(long lim){
         String strTime;
         String dataWald;
         String dataFeuer;
