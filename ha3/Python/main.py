@@ -3,7 +3,7 @@ import random
 import math
 import csv
 
-random.seed()
+#random.seed()
 
 
 # raten der Reaktionen ausrechnen
@@ -61,10 +61,13 @@ def main():
     state = (1000, 1000)
     steps = 0
     stepCount = 0.1
+    reactionCount = 0
 
-    with open('test3.csv', 'w', newline='') as file:
+    random.seed()
+
+    with open('test4.csv', 'w', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow([t, *state])
+        # writer.writerow([t, *state])
 
         while (t < 1.0):
             a0 = a_0(*state)
@@ -80,15 +83,29 @@ def main():
             state = r_j(j, *state)
 
             t = incrementTime(t, exp(aSum))
+            reactionCount += 1
 
             # schreibt analog zu abb. 1 nur die werten in t 0.1 schritten
-            if (t > stepCount):
-                writer.writerow([round(t, 1), *state])
-                stepCount += 0.1
+            #if (t > stepCount):
+            #    writer.writerow([round(t, 1), *state])
+            #    stepCount += 0.1
            
             # ohne die if-bedingung schhreibt diese linie jeden wert
             # writer.writerow([t, *state])
 
-        print(steps, t, state)  
+        #print(steps, t, state)
+
+        return reactionCount
 
 main()
+
+
+# aufgabe 2
+with open('aufgabe2.csv', 'w', newline='') as file:
+        writer = csv.writer(file)
+
+        programmcount = 0
+
+        while (programmcount < 100):
+            writer.writerow([main()])
+            programmcount += 1
