@@ -60,9 +60,11 @@ def main():
     t = 0
     state = (1000, 1000)
     steps = 0
+    stepCount = 0.1
 
-    with open('test.csv', 'w', newline='') as file:
+    with open('test3.csv', 'w', newline='') as file:
         writer = csv.writer(file)
+        writer.writerow([t, *state])
 
         while (t < 1.0):
             a0 = a_0(*state)
@@ -79,9 +81,13 @@ def main():
 
             t = incrementTime(t, exp(aSum))
 
-            steps += 1
+            # schreibt analog zu abb. 1 nur die werten in t 0.1 schritten
+            if (t > stepCount):
+                writer.writerow([round(t, 1), *state])
+                stepCount += 0.1
            
-            writer.writerow([t, state])
+            # ohne die if-bedingung schhreibt diese linie jeden wert
+            # writer.writerow([t, *state])
 
         print(steps, t, state)  
 
