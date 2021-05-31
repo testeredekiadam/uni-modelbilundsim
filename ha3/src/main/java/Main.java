@@ -2,7 +2,7 @@ import javax.swing.*;
 
 public class Main {
     public static void main(String[] args){
-        long final_time = 2800; // Zeiteinheiten bis zum Zeitpunkt 1.0
+        long final_time = 28000; // Zeiteinheiten bis zum Zeitpunkt 1.0
         long sum = 0;
         long wiederholung = 100;
         long initialStep = 0;
