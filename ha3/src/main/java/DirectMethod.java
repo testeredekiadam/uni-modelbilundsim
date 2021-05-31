@@ -1,6 +1,7 @@
-import org.jfree.data.category.DefaultCategoryDataset;
-
 import java.io.FileWriter;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 import java.util.Random;
 
 
@@ -54,16 +55,14 @@ public class DirectMethod {
         double x;
 
 
-        double rate = 0.5; //Lambda
+        double rate = a_sum(); //Lambda
 
         //U(0,1) Gleichverteilung
         Random random = new Random();
         double y = random.nextDouble();
-
+        double xj;
 
         /*      Begründung:
-        *
-        * Idee : Exponentialverteilung(0,1) * a_sum ergibt eine Exponentialverteilung (0, a_sum)
         *
         * Zuerst berecehnet man die Exponentialverteilung (0,1)
         * Die cdf-Formel mit der unteren Grenze l und der oberen Grenze u mit l >= 0 und u > l
@@ -90,26 +89,33 @@ public class DirectMethod {
         //Zeitsinkrementierer
         this.next_time = x;
 
-        //Exponentialverteilung(0,a_sum)
-        x = x * a_sum();
+        //Gleichverteilung (0,a_sum)
+        xj = random.nextDouble() * a_sum();
 
         //Minimale j bestimmen
-        if(r_0() > x){
+        if(r_0() > xj){
             this.wald+=1;
 
         }
-        else if((r_0()+r_1()) > x){
+        else if((r_0()+r_1()) > xj){
             this.wald-=1;
             this.feuer+=1;
         }
-        else if((r_0()+r_1()+r_2()) > x){
+        else if((r_0()+r_1()+r_2()) > xj){
             this.feuer-=1;
         }
     }
 
     //Direct Method von SSA
-    public void directMethod(long lim){
+    public void directMethod(double lim){
         long avgsum = 0;
+        double writingCount = 0.01;
+
+        Locale currentLocale = Locale.getDefault();
+        DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(currentLocale);
+        otherSymbols.setDecimalSeparator('.');
+        DecimalFormat df = new DecimalFormat("#.##", otherSymbols);
+
         //Adresse der CSV-datei
         String filePath = "trial.csv";
         //Die Datei entleeren
@@ -139,21 +145,31 @@ public class DirectMethod {
             reaktion();
             this.time += this.next_time;
 
-            try{
+            if(this.time>writingCount){
 
-                fileWriter.append(this.time + "," + this.wald+ "," + this.feuer);
-                fileWriter.append("\n");
-            }
-            catch(Exception e){
-                e.printStackTrace();
-            }finally{
+
                 try{
-                    fileWriter.flush();
 
-                }catch (Exception e){
-                    e.printStackTrace();
+                    fileWriter.append(df.format(this.time) + "," + this.wald+ "," + this.feuer);
+                    fileWriter.append("\n");
                 }
+                catch(Exception e){
+                    e.printStackTrace();
+                }finally{
+                    try{
+                        fileWriter.flush();
+
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+
+
+                writingCount += 0.01;
             }
+
+
+
 
         }
         try{

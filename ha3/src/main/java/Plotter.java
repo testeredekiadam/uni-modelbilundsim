@@ -3,7 +3,11 @@ import java.io.*;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
+import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.NumberTickUnit;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 public class Plotter extends JFrame{
@@ -14,6 +18,12 @@ public class Plotter extends JFrame{
         DefaultCategoryDataset dataset = getData();
 
         JFreeChart lineChart = ChartFactory.createLineChart("Waldbrandmodel-SSA", "Time", "Amount", dataset);
+
+        try {
+            ChartUtilities.saveChartAsJPEG(new File("graph.jpg"), lineChart, 2000, 1000);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         ChartPanel panel = new ChartPanel(lineChart);
         setContentPane(panel);
