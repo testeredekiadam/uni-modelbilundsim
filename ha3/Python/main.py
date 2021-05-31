@@ -1,6 +1,7 @@
 # diskret ereignisorientiere Simulation
 import random
 import math
+import csv
 
 random.seed()
 
@@ -45,7 +46,7 @@ def r_j(j, w, f):
 
 
 def exp(aSum):
-    rate = 0.5
+    rate = aSum
     y = random.random()
     x = (math.log(1-(1-math.exp(-rate))*y)) / (-rate) 
     return x
@@ -60,22 +61,27 @@ def main():
     state = (1000, 1000)
     steps = 0
 
-    while (t < 28000):
-        a0 = a_0(*state)
-        a1 = a_1(*state)
-        a2 = a_2(*state)
+    with open('test.csv', 'w', newline='') as file:
+        writer = csv.writer(file)
 
-        aSum = a_Sum(a0, a1, a2)
+        while (t < 1.0):
+            a0 = a_0(*state)
+            a1 = a_1(*state)
+            a2 = a_2(*state)
 
-        randZahl = random.randint(0, aSum)
+            aSum = a_Sum(a0, a1, a2)
 
-        j = j_set(randZahl, a0, a1, a2)
+            randZahl = random.randint(0, aSum)
 
-        state = r_j(j, *state)
+            j = j_set(randZahl, a0, a1, a2)
 
-        t = incrementTime(t, exp(aSum))
+            state = r_j(j, *state)
 
-        steps += 1
+            t = incrementTime(t, exp(aSum))
+
+            steps += 1
+           
+            writer.writerow([t, state])
 
         print(steps, t, state)  
 
