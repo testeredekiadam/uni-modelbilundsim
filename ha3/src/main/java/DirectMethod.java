@@ -10,7 +10,15 @@ public class DirectMethod {
     long feuer;
     double next_time;
     double time;
+    long middle_sum;//für experiment
 
+    public long getMiddle_sum(){
+        return this.middle_sum;
+    }
+
+    public void setMiddle_sum(long temp){
+        this.middle_sum = temp;
+    }
 
     public DirectMethod(long wald, long feuer) {
         this.wald = wald;
@@ -101,7 +109,7 @@ public class DirectMethod {
 
     //Direct Method von SSA
     public void directMethod(long lim){
-
+        long avgsum = 0;
         //Adresse der CSV-datei
         String filePath = "trial.csv";
         //Die Datei entleeren
@@ -127,6 +135,7 @@ public class DirectMethod {
         }
 
         while(this.time < lim){
+            avgsum++;
             reaktion();
             this.time += this.next_time;
 
@@ -152,7 +161,10 @@ public class DirectMethod {
         }catch(Exception e) {
             e.printStackTrace();
         }
+        setMiddle_sum(avgsum);
     }
+
+
 
 }
 
