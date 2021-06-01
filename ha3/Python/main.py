@@ -57,7 +57,7 @@ def incrementTime(t, x):
 
 
 
-def main():
+def mainDM():
     t = 0
     state = (1000, 1000)
     steps = 0
@@ -87,7 +87,7 @@ def main():
             reactionCount += 1
 
             # schreibt analog zu abb. 1 nur die werten in t 0.1 schritten
-            #if (t > stepCount):
+            # if (t > stepCount):
             #    writer.writerow([round(t, 1), *state])
             #    stepCount += 0.1
            
@@ -98,19 +98,67 @@ def main():
 
         return reactionCount
 
-# main()
+# mainDM()
+
+    
+
+# aufgabe 3
+def mainFRM():
+    t = 0
+    state = (1000, 1000)
+    steps = 0
+    stepCount = 0.1
+    reactionCount = 0
+
+    while (t < 1.0):
+        a0 = a_0(*state)
+        a1 = a_1(*state)
+        a2 = a_2(*state)
+
+        a0_exp = exp(a0)
+        a1_exp = exp(a1)
+        a2_exp = exp(a2)
+        min_exp = min(a0_exp, a1_exp, a2_exp)
+
+        if (min_exp == a0_exp):
+            j = 0
+        elif (min_exp == a1_exp):
+            j = 1
+        else:
+            j = 2
+
+        state = r_j(j, *state)
+
+        t = incrementTime(t, min_exp)
+
+        reactionCount += 1
+
+        #print(state)
+
+    return reactionCount
+
+#mainFRM()
 
 
 # aufgabe 2
-def standardabweichung():
+# mode auf DM für Direct Method
+# mode auf FRM für First reaction Method
+def standardabweichung(mode):
     programmcount = 0
     reactionWerte = []
 
     while (programmcount < 100):
-        reactionWerte.append(main())
+        if (mode == "DM"):
+            reactionWerte.append(mainDM())
+        elif (mode == "FRM"):
+            reactionWerte.append(mainFRM())
         programmcount += 1
 
-    return np.std(reactionWerte)
+    return (np.mean(reactionWerte), np.std(reactionWerte))
 
-print(standardabweichung())
-# prints 1545.553664448104
+
+# wirft etwa die gleichen werte ab
+print(standardabweichung("DM"))
+print(standardabweichung("FRM"))
+
+
