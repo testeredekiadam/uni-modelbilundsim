@@ -39,7 +39,7 @@ public class Plotter extends JFrame{
 
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
-        String filePath = "trial.csv";
+        String filePath = "directMethod.csv";
         BufferedReader reader;
         FileReader fileReader = null;
         String line;

@@ -6,7 +6,6 @@ import numpy as np
 
 #random.seed()
 
-
 # raten der Reaktionen ausrechnen
 # state tuple muss mit *state in funktion übergeben werden
 def a_0(w, f):

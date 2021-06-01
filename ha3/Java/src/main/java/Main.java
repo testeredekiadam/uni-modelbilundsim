@@ -62,16 +62,16 @@ public class Main {
         */
 
 
-        /*
+       
        SwingUtilities.invokeLater(()->{
             Plotter directMethod = new Plotter("SSA-directMethod");
-            example.setAlwaysOnTop(true);
-            example.pack();
-            example.setSize(2000, 1000);
-            example.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            example.setVisible(true);
+            directMethod.setAlwaysOnTop(true);
+            directMethod.pack();
+            directMethod.setSize(2000, 1000);
+            directMethod.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            directMethod.setVisible(true);
         });
 
-*/
+
     }
 }
