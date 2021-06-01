@@ -169,8 +169,6 @@ public class DirectMethod {
             }
 
 
-
-
         }
         try{
             fileWriter.close();

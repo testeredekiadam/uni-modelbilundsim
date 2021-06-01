@@ -3,26 +3,28 @@ import javax.swing.*;
 public class Main {
     public static void main(String[] args){
         double final_time = 1.0; // Zeiteinheiten bis zum Zeitpunkt 1.0
-        long sum = 0;
-        long wiederholung = 10;
-        long initialStep = 0;
-        double stepSum;
+        long sum;
+        int wiederholung = 100;
+        int initialStep = 0;
+        double stdab;
         double durchschnitt;
+        StandardAbweichung standardAbweichung = new StandardAbweichung(wiederholung);
 
         //Experiment
         while(initialStep<wiederholung) {
             DirectMethod dm = new DirectMethod(1000, 1000);
             dm.directMethod(final_time);
-            stepSum = dm.getMiddle_sum();
-            sum += stepSum;
+            standardAbweichung.insertElement(initialStep, dm.getMiddle_sum());
             initialStep++;
         }
 
+        sum = standardAbweichung.sum();
+        durchschnitt = standardAbweichung.durchschnitt();
+        stdab = standardAbweichung.stdAbw();
 
-        durchschnitt = sum/wiederholung;
         System.out.println("Sum =  " + sum);
         System.out.println("Durchschnitt =  " + durchschnitt);
-
+        System.out.println("Standardabweichung = " + stdab);
 
         /*Graph
         *
