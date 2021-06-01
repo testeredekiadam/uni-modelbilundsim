@@ -111,13 +111,16 @@ def mainFRM():
     reactionCount = 0
 
     while (t < 1.0):
+        # die Raten für alle Reaktionen werden berechnet
         a0 = a_0(*state)
         a1 = a_1(*state)
         a2 = a_2(*state)
 
+        # Für jede Reaktion R_i wird der Zeitpunkt des nächsten feuerns gezogen
         a0_exp = exp(a0)
         a1_exp = exp(a1)
         a2_exp = exp(a2)
+        # Reaktion mit dem kleinsten Zeitpunkt
         min_exp = min(a0_exp, a1_exp, a2_exp)
 
         if (min_exp == a0_exp):
@@ -127,14 +130,17 @@ def mainFRM():
         else:
             j = 2
 
+        # wird hier ausgeführt und der state angepasst
         state = r_j(j, *state)
 
+        # Die Zeit wird dementsprechend erhöht
         t = incrementTime(t, min_exp)
 
         reactionCount += 1
 
         #print(state)
 
+    # reactionCount wird in standardabweichung() verwendet
     return reactionCount
 
 #mainFRM()
@@ -143,7 +149,7 @@ def mainFRM():
 # aufgabe 2
 # mode auf DM für Direct Method
 # mode auf FRM für First reaction Method
-def standardabweichung(mode):
+def durchschnittStdabweichung(mode):
     programmcount = 0
     reactionWerte = []
 
@@ -158,7 +164,7 @@ def standardabweichung(mode):
 
 
 # wirft etwa die gleichen werte ab
-print(standardabweichung("DM"))
-print(standardabweichung("FRM"))
+print(durchschnittStdabweichung("DM"))
+print(durchschnittStdabweichung("FRM"))
 
 
