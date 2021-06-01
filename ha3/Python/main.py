@@ -2,6 +2,7 @@
 import random
 import math
 import csv
+import numpy as np
 
 #random.seed()
 
@@ -56,7 +57,7 @@ def incrementTime(t, x):
 
 
 
-def main():
+def mainDM():
     t = 0
     state = (1000, 1000)
     steps = 0
@@ -86,7 +87,7 @@ def main():
             reactionCount += 1
 
             # schreibt analog zu abb. 1 nur die werten in t 0.1 schritten
-            #if (t > stepCount):
+            # if (t > stepCount):
             #    writer.writerow([round(t, 1), *state])
             #    stepCount += 0.1
            
@@ -97,15 +98,73 @@ def main():
 
         return reactionCount
 
-main()
+# mainDM()
+
+    
+
+# aufgabe 3
+def mainFRM():
+    t = 0
+    state = (1000, 1000)
+    steps = 0
+    stepCount = 0.1
+    reactionCount = 0
+
+    while (t < 1.0):
+        # die Raten für alle Reaktionen werden berechnet
+        a0 = a_0(*state)
+        a1 = a_1(*state)
+        a2 = a_2(*state)
+
+        # Für jede Reaktion R_i wird der Zeitpunkt des nächsten feuerns gezogen
+        a0_exp = exp(a0)
+        a1_exp = exp(a1)
+        a2_exp = exp(a2)
+        # Reaktion mit dem kleinsten Zeitpunkt
+        min_exp = min(a0_exp, a1_exp, a2_exp)
+
+        if (min_exp == a0_exp):
+            j = 0
+        elif (min_exp == a1_exp):
+            j = 1
+        else:
+            j = 2
+
+        # wird hier ausgeführt und der state angepasst
+        state = r_j(j, *state)
+
+        # Die Zeit wird dementsprechend erhöht
+        t = incrementTime(t, min_exp)
+
+        reactionCount += 1
+
+        #print(state)
+
+    # reactionCount wird in standardabweichung() verwendet
+    return reactionCount
+
+#mainFRM()
 
 
 # aufgabe 2
-with open('aufgabe2.csv', 'w', newline='') as file:
-        writer = csv.writer(file)
+# mode auf DM für Direct Method
+# mode auf FRM für First reaction Method
+def durchschnittStdabweichung(mode):
+    programmcount = 0
+    reactionWerte = []
 
-        programmcount = 0
+    while (programmcount < 100):
+        if (mode == "DM"):
+            reactionWerte.append(mainDM())
+        elif (mode == "FRM"):
+            reactionWerte.append(mainFRM())
+        programmcount += 1
 
-        while (programmcount < 100):
-            writer.writerow([main()])
-            programmcount += 1
+    return (np.mean(reactionWerte), np.std(reactionWerte))
+
+
+# wirft etwa die gleichen werte ab
+print(durchschnittStdabweichung("DM"))
+print(durchschnittStdabweichung("FRM"))
+
+
