@@ -2,6 +2,7 @@
 import random
 import math
 import csv
+import numpy as np
 
 #random.seed()
 
@@ -97,15 +98,19 @@ def main():
 
         return reactionCount
 
-main()
+# main()
 
 
 # aufgabe 2
-with open('aufgabe2.csv', 'w', newline='') as file:
-        writer = csv.writer(file)
+def standardabweichung():
+    programmcount = 0
+    reactionWerte = []
 
-        programmcount = 0
+    while (programmcount < 100):
+        reactionWerte.append(main())
+        programmcount += 1
 
-        while (programmcount < 100):
-            writer.writerow([main()])
-            programmcount += 1
+    return np.std(reactionWerte)
+
+print(standardabweichung())
+# prints 1545.553664448104
