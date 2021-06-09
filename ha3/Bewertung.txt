@@ -1,0 +1,38 @@
+Bewertung HA3
+
+3.2.1 Direct Method 8.5/10
+* Implementierung Zustand, Reaktionen 3/3
+* Zufallszahlengenerator 0/1
+* Direct method 2.5/3
+* Startzustand 1/1
+* Observierung als CSV 1/1
+* Plot erstellen 1/1
+
+Anmerkung:
+- Ich hab keine Ahnung was ihr da für ne Herleitung für eure Formel aufgestellt habt, aber eure Formel funktioniert nur für große Lambdas
+	- BTW Ihr hättet einfach die Formel aus der Aufgabenstellung nehmen können
+	- Ihr könnt ja mal die beiden Formeln vergleichen für verschiedene x und lambdas
+	- Da eure Formel aber zu keinem Fehler führt aber doch mathematisch falsch ist -> -0.5p
+- Zufallszahlengenerator nicht reproduzierbar (seed?) -> -1p
+
+3.2.2 Experiment 2/2
+* Experiment mit 100 Wiederholungen 1/1
+* Durchschnittliche Anzahl an Reaktionen, Standardabweichung 1/1
+
+3.2.3 First Reaction Method 2/4
+*  First reaction method 2/2
+*  Validierung gegen die erste Impl. 0/2
+
+Anmerkung:
+- Validierung nicht dokumentiert -> -2p
+	- In welcher Größenordnung unterscheiden sich die Ergebnisse?
+	- Warum unterscheiden sich die Ergebnisse? etc.
+
+
+3.2.4 Tau-Leaping Approximation 4/4
+
+Kommentare:
+
+
+ 
+Gesamtpunktzahl: 16.5/20
