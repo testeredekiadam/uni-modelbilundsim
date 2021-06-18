@@ -87,7 +87,7 @@ public class DirectMethod {
         x = (Math.log(1-(1-Math.exp(-rate))*y))/(-rate); //Works
         //Zeitsinkrementierer
         this.next_time = x;
-
+        
         //Gleichverteilung (0,a_sum)
         double xj;
         xj = random.nextDouble() * a_sum();
