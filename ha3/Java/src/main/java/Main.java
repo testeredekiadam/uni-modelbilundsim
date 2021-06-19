@@ -1,8 +1,13 @@
 import javax.swing.*;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args){
+        long tempSeed = 10L;
+        Random rnd = new Random();
+        rnd.setSeed(tempSeed);
 
+        long seed;
         double final_time = 1.0; // Zeiteinheiten bis zum Zeitpunkt 1.0
         int wiederholung = 100;
         int initialStep = 0;
@@ -20,7 +25,8 @@ public class Main {
 
         //Experiment Aufgabe-2
         while(initialStep<wiederholung) {
-            DirectMethod dm = new DirectMethod(1000, 1000);
+            seed = rnd.nextLong();
+            DirectMethod dm = new DirectMethod(1000, 1000, seed);
             dm.directMethod(final_time);
             standardAbweichungA2.insertElement(initialStep, dm.getMiddle_sum());
             initialStep++;
@@ -28,9 +34,11 @@ public class Main {
 
         //Experimet Aufgabe-3
 
+        rnd.setSeed(tempSeed);
         initialStep = 0;
         while(initialStep<wiederholung) {
-            FirstReactionMethod fr = new FirstReactionMethod(1000, 1000);
+            seed = rnd.nextLong();
+            FirstReactionMethod fr = new FirstReactionMethod(1000, 1000, seed);
             fr.firstReactionMethod(final_time);
             standardAbweichungA3.insertElement(initialStep, fr.getMiddle_sum());
             initialStep++;

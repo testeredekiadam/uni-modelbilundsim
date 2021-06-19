@@ -4,17 +4,15 @@ import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 import java.util.Random;
 
-public class FirstReactionMethod {
-    long seed;
+
+public class DirectMethod {
+
+    long seed = 10;
     long wald;
     long feuer;
-    double time_r0;
-    double time_r1;
-    double time_r2;
     double next_time;
     double time;
-    long middle_sum;
-    Random random = new Random(seed);
+    long middle_sum;//für experiment
 
     public long getMiddle_sum(){
         return this.middle_sum;
@@ -24,16 +22,16 @@ public class FirstReactionMethod {
         this.middle_sum = temp;
     }
 
-
-    public FirstReactionMethod(long wald, long feuer, long seed){
+    public DirectMethod(long wald, long feuer) {
         this.wald = wald;
         this.feuer = feuer;
-        this.seed = seed;
     }
 
     //Wald -> 2Wald @ 20
-    public double r_0(){
-        return (this.wald * 20);
+    public long r_0() {
+
+        return (this.wald*20);
+
     }
 
     //Wald + Feuer ->  2Feuer @ 0.01
@@ -44,51 +42,51 @@ public class FirstReactionMethod {
 
     //Feuer ->  @ 20
     public double r_2() {
-
         return (this.feuer*20);
     }
 
+    //Summe
+    public double a_sum() {
+        return (r_0() + r_1() + r_2());
+    }
 
-    public double expVer(double rate){
+
+    //Reaktion
+    public void reaktion() {
         double x;
 
+
+        double rate = a_sum(); //Lambda
+
         //U(0,1) Gleichverteilung
-
-
+        Random random = new Random(seed);
         double y = random.nextDouble();
 
-        x = (Math.log(1-(1-Math.exp(-rate))*y))/(-rate); //Works
+
+        x = (Math.log(1-y))/(-rate); //Formel aus der Aufgabenstellung
         //Zeitsinkrementierer
-        return x;
-    }
+        this.next_time = x;
 
-    public void reaktion(){
-        Double[] array;
-        this.time_r0 =  expVer(r_0());
-        this.time_r1 = expVer(r_1());
-        this.time_r2 = expVer(r_2());
-        array = new Double[]{this.time_r0, this.time_r1, this.time_r2};
-        double min = array[0];
-        for(int i = 1; i < 3 ; i++){
-            if(array[i]<min){
-                min = array[i];
-            }
-        }
+        //Gleichverteilung (0,a_sum)
+        double xj;
+        xj = random.nextDouble() * a_sum();
 
-        if(min == array[0]){
+        //Minimale j bestimmen
+        if(r_0() > xj){
             this.wald+=1;
-        }else if(min == array[1]){
+
+        }
+        else if((r_0()+r_1()) > xj){
             this.wald-=1;
             this.feuer+=1;
-        }else if(min == array[2]){
+        }
+        else if((r_0()+r_1()+r_2()) > xj){
             this.feuer-=1;
         }
-
-
-        this.next_time = min;
     }
 
-    public void firstReactionMethod(double lim){
+    //Direct Method von SSA
+    public void directMethod(double lim){
         long avgsum = 0;
         double writingCount = 0.01;
 
@@ -98,11 +96,9 @@ public class FirstReactionMethod {
         DecimalFormat df = new DecimalFormat("#.##", otherSymbols);
 
         //Adresse der CSV-datei
-        String filePath = "firstReactionMethod.csv";
-
+        String filePath = "directMethod.csv";
         //Die Datei entleeren
         FileWriter fileWriter = null;
-
         try{
             fileWriter = new FileWriter(filePath);
             //HEADER
@@ -159,11 +155,9 @@ public class FirstReactionMethod {
             e.printStackTrace();
         }
         setMiddle_sum(avgsum);
-
     }
 
 
 
-
-
 }
+

@@ -1,17 +1,19 @@
 import java.io.FileWriter;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.Locale;
-import java.util.Random;
+import java.util.*;
 
 
 public class DirectMethod {
 
+    long seed;
     long wald;
     long feuer;
     double next_time;
     double time;
     long middle_sum;//für experiment
+
+    Random random = new Random(seed);
 
     public long getMiddle_sum(){
         return this.middle_sum;
@@ -21,10 +23,13 @@ public class DirectMethod {
         this.middle_sum = temp;
     }
 
-    public DirectMethod(long wald, long feuer) {
+    public DirectMethod(long wald, long feuer, long seed) {
         this.wald = wald;
         this.feuer = feuer;
+        this.seed = seed;
     }
+
+
 
     //Wald -> 2Wald @ 20
     public long r_0() {
@@ -58,7 +63,8 @@ public class DirectMethod {
         double rate = a_sum(); //Lambda
 
         //U(0,1) Gleichverteilung
-        Random random = new Random();
+
+
         double y = random.nextDouble();
 
         /*      Begründung:
@@ -82,9 +88,9 @@ public class DirectMethod {
         *        ln[ 1 - (1 - e^(-rate))*y ]
         * x = ---------------------------------
         *              -rate
-        *
+        * (1-Math.exp(-rate))*
         */
-        x = (Math.log(1-(1-Math.exp(-rate))*y))/(-rate); //Works
+        x = (Math.log(1-y))/(-rate); //Works
         //Zeitsinkrementierer
         this.next_time = x;
 
