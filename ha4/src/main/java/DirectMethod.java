@@ -13,7 +13,7 @@ import java.util.Random;
 public class DirectMethod {
 
     //variables
-    long seed = 10;
+    long seed = 1000;
     long initwald;
     long initfeuer;
 
@@ -28,7 +28,7 @@ public class DirectMethod {
 
 
     double maxFeuer;
-    double maxFeuerZeit = 0;
+    double maxFeuerZeit;
 
     Random random = new Random(seed);
 
@@ -215,14 +215,15 @@ public class DirectMethod {
         for(double i=0; i<10.0 ; i++){
             this.loeschRate=1.0;
             for(double j=0; j<10.0; j++){
-                this.maxFeuer = this.initfeuer;
+                this.maxFeuer = 500;
+                this.maxFeuerZeit = 0.3;
                 this.wald = this.initwald;
                 this.feuer = this.initfeuer;
                 this.time = 0;
 
                 directMethod(1.0);
 
-                this.distanzFunktion = Math.sqrt(Math.pow((1-(this.maxFeuer/500)) * 2 , 2) + Math.pow((1-(this.maxFeuer/500)) * 2 , 2) );
+                this.distanzFunktion = Math.sqrt(Math.pow((1-(this.maxFeuer/500.0)) , 2) + Math.pow((1-(this.maxFeuerZeit/0.3)), 2) );
 
                 System.out.println("Waldrate " + this.waldRate + " Loeschrate "+ this.loeschRate + " Distanzfunktion " + this.distanzFunktion);
                 this.loeschRate++;
