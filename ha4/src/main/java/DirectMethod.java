@@ -32,6 +32,8 @@ public class DirectMethod {
 
     Random random = new Random(seed);
 
+    ColorPlot hMap = new ColorPlot();
+
     double distanzFunktion;
     //variables
 
@@ -108,13 +110,6 @@ public class DirectMethod {
         }
 
         this.time += this.next_time;
-        //Zeitpunkt der maximalen Feuerausbreitung
-        if(this.feuer > this.maxFeuer){
-            this.maxFeuer = this.feuer;
-            this.maxFeuerZeit = this.time;
-        }
-
-
 
     }
 
@@ -161,6 +156,13 @@ public class DirectMethod {
         while(this.time < lim) {
             avgsum++;
             reaktion();
+
+
+            //Zeitpunkt der maximalen Feuerausbreitung
+            if(this.feuer > this.maxFeuer){
+                this.maxFeuer = this.feuer;
+                this.maxFeuerZeit = this.time;
+            }
 
 
 
@@ -212,9 +214,9 @@ public class DirectMethod {
     public void parameterScan(){
 
 
-        for(double i=0; i<10.0 ; i++){
+        while(this.waldRate<=10.0){
             this.loeschRate=1.0;
-            for(double j=0; j<10.0; j++){
+            while(this.loeschRate<=10.0){
                 this.maxFeuer = 500;
                 this.maxFeuerZeit = 0.3;
                 this.wald = this.initwald;
@@ -223,14 +225,19 @@ public class DirectMethod {
 
                 directMethod(1.0);
 
-                this.distanzFunktion = Math.sqrt(Math.pow((1-(this.maxFeuer/500.0)) , 2) + Math.pow((1-(this.maxFeuerZeit/0.3)), 2) );
+                //Funktion aus der Aufgabenstellung
+                this.distanzFunktion = Math.sqrt(Math.pow((Math.abs(1-(this.maxFeuer/500.0))) , 2) + Math.pow((Math.abs(1-(this.maxFeuerZeit/0.3))), 2) );
 
-                System.out.println("Waldrate " + this.waldRate + " Loeschrate "+ this.loeschRate + " Distanzfunktion " + this.distanzFunktion);
-                this.loeschRate++;
+                hMap.createDataset(this.waldRate, this.loeschRate, this.distanzFunktion);
+               // System.out.println("Waldrate " + this.waldRate + " Loeschrate "+ this.loeschRate + " Distanzfunktion " + this.distanzFunktion);
+                this.loeschRate += 1;
 
             }
-            this.waldRate++;
+            this.waldRate += 1;
         }
+
+        hMap.pack();
+        hMap.setVisible(true);
 
 
     }
