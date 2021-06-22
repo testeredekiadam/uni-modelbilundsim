@@ -12,6 +12,7 @@ import java.util.Random;
 
 public class DirectMethod {
 
+    //variables
     long seed = 10;
     long initwald;
     long initfeuer;
@@ -26,8 +27,13 @@ public class DirectMethod {
     double loeschRate; //1.0 - 10.0
 
 
-    long maxFeuer = initfeuer;
+    double maxFeuer;
     double maxFeuerZeit = 0;
+
+    Random random = new Random(seed);
+
+    double distanzFunktion;
+    //variables
 
 
     public long getMiddle_sum(){
@@ -76,7 +82,7 @@ public class DirectMethod {
         double rate = a_sum(); //Lambda
 
         //U(0,1) Gleichverteilung
-        Random random = new Random();
+
         double y = random.nextDouble();
 
 
@@ -100,6 +106,14 @@ public class DirectMethod {
         else if((r_0()+r_1()+r_2()) > xj){
             this.feuer-=1;
         }
+
+        this.time += this.next_time;
+        //Zeitpunkt der maximalen Feuerausbreitung
+        if(this.feuer > this.maxFeuer){
+            this.maxFeuer = this.feuer;
+            this.maxFeuerZeit = this.time;
+        }
+
 
 
     }
@@ -147,15 +161,8 @@ public class DirectMethod {
         while(this.time < lim) {
             avgsum++;
             reaktion();
-            this.time += this.next_time;
-
-            //Zeitpunkt der maximalen Feuerausbreitung
 
 
-            if(this.feuer > this.maxFeuer){
-                this.maxFeuer = this.feuer;
-                this.maxFeuerZeit = this.time;
-            }
 
 /*
             if(this.time>writingCount){
@@ -208,13 +215,16 @@ public class DirectMethod {
         for(double i=0; i<10.0 ; i++){
             this.loeschRate=1.0;
             for(double j=0; j<10.0; j++){
+                this.maxFeuer = this.initfeuer;
                 this.wald = this.initwald;
                 this.feuer = this.initfeuer;
                 this.time = 0;
 
                 directMethod(1.0);
 
-                System.out.println("Waldrate " + this.waldRate + " Loeschrate "+ this.loeschRate + " Max Feuer "+ this.maxFeuer + " Max Feuer Zeit "+ this.maxFeuerZeit + " Wald " + this.wald + " Feuer " + this.feuer);
+                this.distanzFunktion = Math.sqrt(Math.pow((1-(this.maxFeuer/500)) * 2 , 2) + Math.pow((1-(this.maxFeuer/500)) * 2 , 2) );
+
+                System.out.println("Waldrate " + this.waldRate + " Loeschrate "+ this.loeschRate + " Distanzfunktion " + this.distanzFunktion);
                 this.loeschRate++;
 
             }
