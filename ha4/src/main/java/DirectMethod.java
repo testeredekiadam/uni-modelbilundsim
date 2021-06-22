@@ -26,8 +26,8 @@ public class DirectMethod {
     double loeschRate; //1.0 - 10.0
 
 
-    long maxFeuer;
-    double maxFeuerZeit;
+    long maxFeuer = initfeuer;
+    double maxFeuerZeit = 0;
 
 
     public long getMiddle_sum(){
@@ -101,11 +101,7 @@ public class DirectMethod {
             this.feuer-=1;
         }
 
-        //Zeitpunkt der maximalen Feuerausbreitung
-        if(this.feuer > this.maxFeuer){
-            this.maxFeuer = this.feuer;
-            this.maxFeuerZeit = this.time;
-        }
+
     }
 
 
@@ -153,6 +149,13 @@ public class DirectMethod {
             reaktion();
             this.time += this.next_time;
 
+            //Zeitpunkt der maximalen Feuerausbreitung
+
+
+            if(this.feuer > this.maxFeuer){
+                this.maxFeuer = this.feuer;
+                this.maxFeuerZeit = this.time;
+            }
 
 /*
             if(this.time>writingCount){
@@ -207,10 +210,11 @@ public class DirectMethod {
             for(double j=0; j<10.0; j++){
                 this.wald = this.initwald;
                 this.feuer = this.initfeuer;
+                this.time = 0;
 
                 directMethod(1.0);
 
-                System.out.println("Waldrate " + this.waldRate + " Loeschrate "+ this.loeschRate + " Max Feuer "+ this.maxFeuer + "Max Feuer Zeit "+ this.maxFeuerZeit + "Wald " + this.wald + "Feuer " + this.feuer);
+                System.out.println("Waldrate " + this.waldRate + " Loeschrate "+ this.loeschRate + " Max Feuer "+ this.maxFeuer + " Max Feuer Zeit "+ this.maxFeuerZeit + " Wald " + this.wald + " Feuer " + this.feuer);
                 this.loeschRate++;
 
             }
