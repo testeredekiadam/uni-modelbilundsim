@@ -89,7 +89,7 @@ public class Kontinuerlich {
 
 
 
-        while(instep < 1.0){
+        while(instep <= 1.0){
 
             timer = Double.toString(instep);
             newdataset.addValue(this.wald, "Wald", timer);
