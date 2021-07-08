@@ -1,8 +1,13 @@
 import org.jfree.data.category.DefaultCategoryDataset;
 
+import java.io.FileWriter;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
+
 public class ForwardEuler {
 
-    //variables
+    //variablen
     long wald;
     long feuer;
     double step;
@@ -11,7 +16,7 @@ public class ForwardEuler {
     double k3 = 20;
     DefaultCategoryDataset dataset;
 
-    //constructor
+
 
 
     // dWald / dt
@@ -52,6 +57,37 @@ public class ForwardEuler {
         String timer;
         DefaultCategoryDataset newdataset = new DefaultCategoryDataset();
 
+        Locale currentLocale = Locale.getDefault();
+        DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(currentLocale);
+        otherSymbols.setDecimalSeparator('.');
+        DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
+
+        //Adresse der CSV-datei
+        String filePath = "forwardEuler-"+step+".csv";
+
+        //Die Datei entleeren
+        FileWriter fileWriter = null;
+        try{
+            fileWriter = new FileWriter(filePath);
+            //HEADER
+            fileWriter.append("Time, Wald, Feuer");
+            fileWriter.append("\n");
+            //Anfangszustand
+            fileWriter.append(instep + "," + this.wald+ "," + this.feuer);
+            fileWriter.append("\n");
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            try{
+                fileWriter.flush();
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+
 
         while(instep < 1.0){
 
@@ -61,12 +97,36 @@ public class ForwardEuler {
 
            // System.out.println("Wald " + this.wald + " Feuer " + this.feuer + " Step " + instep);
 
-            reaktion();
-
+            reaktion();//reac
 
             instep += step;
 
+
+            try{
+
+                fileWriter.append(df.format(instep) + "," + this.wald+ "," + this.feuer);
+                fileWriter.append("\n");
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }finally{
+                try{
+                    fileWriter.flush();
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+
         }
+        try{
+            fileWriter.close();
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+
+
         this.dataset = newdataset;
     }
 /*
