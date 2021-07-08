@@ -14,7 +14,7 @@ public class Main {
 
 
 
-        JFrame f3 = new JFrame( "FlowLayout" );
+        JFrame f3 = new JFrame( "Kontinuerlich" );
         f3.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
         f3.setLayout( new FlowLayout() );
         ChartPanel cp;
