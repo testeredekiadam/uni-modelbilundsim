@@ -10,7 +10,7 @@ public class Main {
 
     public static void main( String[] args ) {
 
-        ForwardEuler firat = new ForwardEuler();
+        Kontinuerlich firat = new Kontinuerlich();
 
 
 
