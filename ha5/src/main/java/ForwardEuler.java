@@ -20,13 +20,13 @@ public class ForwardEuler {
 
 
     // dWald / dt
-    public double waldDerivation(){
-        return (k1*this.wald - k2*this.wald*this.feuer);
+    public double waldDerivation(double ordnung){
+        return (k1*(this.wald + ordnung) - k2*(this.wald + ordnung)*this.feuer);
     }
 
     // dFeuer / dt
-    public double feuerDerivation(){
-        return (k2*this.wald*this.feuer - k3*this.feuer);
+    public double feuerDerivation(double ordnung){
+        return (k2*this.wald*(this.feuer + ordnung) - k3*(this.feuer + ordnung));
     }
 
 
@@ -34,8 +34,8 @@ public class ForwardEuler {
         long nwald;
         long nfeuer;
 
-        nwald = this.wald + Math.round(step*waldDerivation());
-        nfeuer = this.feuer + Math.round(step*feuerDerivation());
+        nwald = this.wald + Math.round(step*waldDerivation(0));
+        nfeuer = this.feuer + Math.round(step*feuerDerivation(0));
 
         if(nwald < 0){
             nwald = 0;
@@ -129,20 +129,6 @@ public class ForwardEuler {
 
         this.dataset = newdataset;
     }
-/*
-    public DefaultCategoryDataset getData(){
-        String timer = Double.toString(this.step);
 
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-
-
-        dataset.addValue(this.wald, "Wald", timer);
-        dataset.addValue(this.feuer, "Feuer", timer);
-
-        return dataset;
-
-    }
-
- */
 
 }
