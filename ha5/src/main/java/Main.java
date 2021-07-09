@@ -42,6 +42,13 @@ public class Main {
         f3.add( cp);
 
 
+        firat.rungeKuttaMethod(0.02);
+        cp = new ChartPanel(ChartFactory.createLineChart("Schrittweite 0.025", "Time", "Amount", firat.dataset));
+        cp.setPreferredSize(new Dimension(300, 300));
+        f3.add( cp);
+        
+
+
 
 
 
