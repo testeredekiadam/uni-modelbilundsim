@@ -14,10 +14,7 @@ public class Kontinuierlich {
     double k1 = 20;
     double k2= 0.01;
     double k3 = 20;
-
-
     DefaultCategoryDataset dataset;
-
 
 
     //Ableitung
@@ -101,13 +98,11 @@ public class Kontinuierlich {
         }
 
 
-
         while(instep <= 1.0){
 
             timer = Double.toString(instep);
             newdataset.addValue(this.wald, "Wald", timer);
             newdataset.addValue(this.feuer, "Feuer", timer);
-
 
 
             reaktionEuler();//reaktion Forward Euler
@@ -131,14 +126,12 @@ public class Kontinuierlich {
                 }
             }
 
-
         }
         try{
             fileWriter.close();
         }catch(Exception e) {
             e.printStackTrace();
         }
-
 
         this.dataset = newdataset;
     }
@@ -187,9 +180,6 @@ public class Kontinuierlich {
         this.feuer = nfeuer;
     }
 
-
-
-
     // Runge Kutta Section
     public void rungeKuttaMethod(double step){
         this.wald = 1000;
@@ -229,23 +219,15 @@ public class Kontinuierlich {
             }
         }
 
-
-
         while(instep <= 1.0){
 
             timer = Double.toString(instep);
             newdataset.addValue(this.wald, "Wald", timer);
             newdataset.addValue(this.feuer, "Feuer", timer);
-
-
-
             reaktionRungeKutta();//reaktion runge kutta method
-
             instep += step;
 
-
             try{
-
                 fileWriter.append(df.format(instep) + "," + this.wald+ "," + this.feuer);
                 fileWriter.append("\n");
             }
@@ -259,20 +241,12 @@ public class Kontinuierlich {
                     e.printStackTrace();
                 }
             }
-
-
         }
         try{
             fileWriter.close();
         }catch(Exception e) {
             e.printStackTrace();
         }
-
-
         this.dataset = newdataset;
     }
-
-
-
-
 }
