@@ -51,9 +51,6 @@ public class Main {
 
 
 
-
-
-
         f3.setSize( 1920, 1080 );
         f3.setLocationRelativeTo( null );
 
