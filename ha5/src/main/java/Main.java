@@ -10,7 +10,7 @@ public class Main {
 
     public static void main( String[] args ) {
 
-        Kontinuierlich firat = new Kontinuierlich();
+        Kontinuierlich model = new Kontinuierlich();
 
 
 
@@ -21,33 +21,51 @@ public class Main {
 
 
 
-        firat.forwardEulerMethod(0.025);
-        cp = new ChartPanel(ChartFactory.createLineChart("Schrittweite 0.025", "Time", "Amount", firat.dataset));
+        //Anfang Eulers
+        model.forwardEulerMethod(0.025);
+        cp = new ChartPanel(ChartFactory.createLineChart("Schrittweite 0.025", "Time", "Amount", model.dataset));
         cp.setPreferredSize(new Dimension(300, 300));
         f3.add( cp);
 
-        firat.forwardEulerMethod(0.01);
-        cp = new ChartPanel(ChartFactory.createLineChart("Schrittweite 0.01", "Time", "Amount", firat.dataset));
+        model.forwardEulerMethod(0.01);
+        cp = new ChartPanel(ChartFactory.createLineChart("Schrittweite 0.01", "Time", "Amount", model.dataset));
         cp.setPreferredSize(new Dimension(300, 300));
         f3.add( cp);
 
-        firat.forwardEulerMethod(0.001);
-        cp = new ChartPanel(ChartFactory.createLineChart("Schrittweite 0.001", "Time", "Amount", firat.dataset));
+        model.forwardEulerMethod(0.001);
+        cp = new ChartPanel(ChartFactory.createLineChart("Schrittweite 0.001", "Time", "Amount", model.dataset));
         cp.setPreferredSize(new Dimension(300, 300));
         f3.add( cp);
 
-        firat.forwardEulerMethod(0.0001);
-        cp = new ChartPanel(ChartFactory.createLineChart("Schrittweite 0.0001", "Time", "Amount", firat.dataset));
+        model.forwardEulerMethod(0.0001);
+        cp = new ChartPanel(ChartFactory.createLineChart("Schrittweite 0.0001", "Time", "Amount", model.dataset));
+        cp.setPreferredSize(new Dimension(300, 300));
+        f3.add( cp);
+        //Ende Eulers
+
+
+        //Anfang Runges
+        model.rungeKuttaMethod(0.025);
+        cp = new ChartPanel(ChartFactory.createLineChart("Schrittweite 0.025", "Time", "Amount", model.dataset));
         cp.setPreferredSize(new Dimension(300, 300));
         f3.add( cp);
 
-/*
-        firat.rungeKuttaMethod(0.02);
-        cp = new ChartPanel(ChartFactory.createLineChart("Schrittweite 0.025", "Time", "Amount", firat.dataset));
+        model.rungeKuttaMethod(0.01);
+        cp = new ChartPanel(ChartFactory.createLineChart("Schrittweite 0.01", "Time", "Amount", model.dataset));
         cp.setPreferredSize(new Dimension(300, 300));
         f3.add( cp);
-        
-*/
+
+        model.rungeKuttaMethod(0.001);
+        cp = new ChartPanel(ChartFactory.createLineChart("Schrittweite 0.001", "Time", "Amount", model.dataset));
+        cp.setPreferredSize(new Dimension(300, 300));
+        f3.add( cp);
+
+        model.rungeKuttaMethod(0.0001);
+        cp = new ChartPanel(ChartFactory.createLineChart("Schrittweite 0.0001", "Time", "Amount", model.dataset));
+        cp.setPreferredSize(new Dimension(300, 300));
+        f3.add( cp);
+        //Ende Runges
+
 
 
 

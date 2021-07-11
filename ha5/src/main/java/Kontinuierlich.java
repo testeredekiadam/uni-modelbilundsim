@@ -25,17 +25,17 @@ public class Kontinuierlich {
     //Forward Euler Ordnung = 0
 
     // dWald / dt
-    public double waldDerivation(){
-        return (this.k1*(this.wald) - this.k2*(this.wald)*this.feuer);
+    public double waldDerivation(double iwald, double ifeuer){
+        return (this.k1*(iwald) - this.k2*(iwald)*ifeuer);
     }
 
     // dFeuer / dt
-    public double feuerDerivation(){
-        return (this.k2*this.wald*(this.feuer) - this.k3*(this.feuer));
+    public double feuerDerivation(double iwald, double ifeuer){
+        return (this.k2*iwald*(ifeuer) - this.k3*(ifeuer));
     }
 
 
-    //evaluation der Anzahl für Runge-Kutta
+    //evaluator für Runge-Kutta
     public double eval(double anzahl, double ordnung, double step){
             return anzahl + ordnung*step;
     }
@@ -47,8 +47,8 @@ public class Kontinuierlich {
         double nwald;
         double nfeuer;
 
-        nwald = this.wald + this.step*waldDerivation();
-        nfeuer = this.feuer + this.step*feuerDerivation();
+        nwald = this.wald + this.step*waldDerivation(this.wald, this.feuer);
+        nfeuer = this.feuer + this.step*feuerDerivation(this.wald, this.feuer);
 
         if(nwald < 0){
             nwald = 0;
@@ -151,41 +151,29 @@ public class Kontinuierlich {
 
 
         double weval1 = this.wald;
-        double feval1=this.feuer;
-        double wordnung1;
-        double fordnung1;
+        double feval1 = this.feuer;
+        double wordnung1 = waldDerivation(weval1, feval1);
+        double fordnung1 = feuerDerivation(weval1, feval1);
 
-        double weval2;
-        double feval2;
-        double wordnung2;
-        double fordnung2;
-
-
-        double weval3;
-        double feval3;
-        double wordnung3;
-        double fordnung3;
+        double weval2 = eval(weval1, wordnung1,this.step*0.5);
+        double feval2 = eval(feval1, fordnung1,this.step*0.5);
+        double wordnung2 = waldDerivation(weval2, feval2);
+        double fordnung2 = feuerDerivation(weval2, feval2);
 
 
-        double weval4;
-        double feval4;
-        double wordnung4;
-        double fordnung4;
+        double weval3 = eval(weval1, wordnung2,this.step*0.5);
+        double feval3 = eval(feval1, fordnung2,this.step*0.5);
+        double wordnung3 = waldDerivation(weval3, feval3);
+        double fordnung3 = feuerDerivation(weval3, feval3);
 
 
+        double weval4 = eval(weval1, wordnung3,this.step);
+        double feval4 = eval(feval1, fordnung3,this.step);
+        double wordnung4 = waldDerivation(weval4, feval4);
+        double fordnung4 = feuerDerivation(weval4, feval4);
 
-        wordnung1 = waldDerivation();
-        wordnung2 = waldDerivation();
-        wordnung3 = waldDerivation();
-        wordnung4 = waldDerivation();
 
         nwald = this.wald + this.step*(wordnung1 + 2*wordnung2 + 2*wordnung3 + wordnung4)/6;
-
-        fordnung1 = feuerDerivation();
-        fordnung2 = feuerDerivation();
-        fordnung3 = feuerDerivation();
-        fordnung4 = feuerDerivation();
-
         nfeuer = this.feuer +  this.step*(fordnung1 + 2*fordnung2 + 2*fordnung3 + fordnung4)/6;
 
         if(nwald < 0){
