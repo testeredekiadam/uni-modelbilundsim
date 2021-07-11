@@ -10,7 +10,7 @@ public class Main {
 
     public static void main( String[] args ) {
 
-        Kontinuerlich firat = new Kontinuerlich();
+        Kontinuierlich firat = new Kontinuierlich();
 
 
 
@@ -41,13 +41,13 @@ public class Main {
         cp.setPreferredSize(new Dimension(300, 300));
         f3.add( cp);
 
-
+/*
         firat.rungeKuttaMethod(0.02);
         cp = new ChartPanel(ChartFactory.createLineChart("Schrittweite 0.025", "Time", "Amount", firat.dataset));
         cp.setPreferredSize(new Dimension(300, 300));
         f3.add( cp);
         
-
+*/
 
 
 
