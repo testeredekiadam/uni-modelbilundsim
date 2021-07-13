@@ -18,9 +18,9 @@ public class Kontinuierlich {
     DefaultCategoryDataset dataset;
 
 
-    //Ableitung
-    //Ordnung Variablen sind für Runge Kutta
-    //Forward Euler Ordnung = 0
+    // Ableitung
+    // Ordnung Variablen sind für Runge Kutta
+    // Forward Euler Ordnung = 0
 
     // dWald / dt
     public double waldDerivation(double iwald, double ifeuer){
@@ -33,7 +33,7 @@ public class Kontinuierlich {
     }
 
 
-    //evaluator für Runge-Kutta
+    // Evaluator für Runge-Kutta
     public double eval(double anzahl, double ordnung, double step){
         return anzahl + ordnung*step;
     }
@@ -43,7 +43,7 @@ public class Kontinuierlich {
 
 
 
-    //Forward Euler Section
+    // Forward Euler Section
 
     public double[] reaktionEuler(double argwald, double argfeuer, double step){
         double nwald;
@@ -78,17 +78,17 @@ public class Kontinuierlich {
         otherSymbols.setDecimalSeparator('.');
         DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
 
-        //Adresse der CSV-datei
+        // Adresse der CSV-datei
         String filePath = "forwardEuler-"+step+".csv";
 
-        //Die Datei entleeren
+        // Die Datei entleeren
         FileWriter fileWriter = null;
         try{
             fileWriter = new FileWriter(filePath);
-            //HEADER
+            // HEADER
             fileWriter.append("Time, Wald, Feuer");
             fileWriter.append("\n");
-            //Anfangszustand
+            // Anfangszustand
             fileWriter.append(instep + "," + this.wald+ "," + this.feuer);
             fileWriter.append("\n");
         }
@@ -111,7 +111,7 @@ public class Kontinuierlich {
             newdataset.addValue(this.feuer, "Feuer", timer);
 
 
-            reaktionEuler(this.wald, this.feuer, this.step);//reaktion Forward Euler
+            reaktionEuler(this.wald, this.feuer, this.step); // Reaktion Forward Euler
             this.wald = Math.round(this.arr[0]);
             this.feuer = Math.round(this.arr[1]);
             instep += step;
@@ -203,17 +203,17 @@ public class Kontinuierlich {
         otherSymbols.setDecimalSeparator('.');
         DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
 
-        //Adresse der CSV-datei
+        // Adresse der CSV-datei
         String filePath = "rungeKutta-"+step+".csv";
 
-        //Die Datei entleeren
+        // Die Datei entleeren
         FileWriter fileWriter = null;
         try{
             fileWriter = new FileWriter(filePath);
-            //HEADER
+            // HEADER
             fileWriter.append("Time, Wald, Feuer");
             fileWriter.append("\n");
-            //Anfangszustand
+            // Anfangszustand
             fileWriter.append(instep + "," + this.wald+ "," + this.feuer);
             fileWriter.append("\n");
         }
@@ -233,7 +233,7 @@ public class Kontinuierlich {
             timer = Double.toString(instep);
             newdataset.addValue(this.wald, "Wald", timer);
             newdataset.addValue(this.feuer, "Feuer", timer);
-            reaktionRungeKutta(this.wald, this.feuer, this.step);//reaktion runge kutta method
+            reaktionRungeKutta(this.wald, this.feuer, this.step); //Reaktion Runge Kutta Methode
             this.wald = Math.round(this.arr[0]);
             this.feuer = Math.round(this.arr[1]);
             instep += step;
@@ -265,9 +265,9 @@ public class Kontinuierlich {
 
 
 
-    /*Adaptive schrittweite methoden
+    /* Adaptive Schrittweite Methoden:
 
-    Man kalkuliert die Werte vom initialen Schritt bis zur initialen Schrittweite (normalfeuer, normalwald),
+    Es werden die Werte vom initialen Schritt bis zur initialen Schrittweite kalkuliert(normalfeuer, normalwald),
     bis zur Hälfte der Schrittweite (halfwald, halffeuer)
     und bis zur doppelten Schrittweite (doublewald, doublefeuer).
     Man definiert dann eine Grenze, drei Schrittweite (minimale Schrittweite, minimum
@@ -276,32 +276,32 @@ public class Kontinuierlich {
     Falls die Werte von normalwald und normalfeuer unter der Grenze sind,
     setzt man die Schrittweite als minimale Schrittweite und die Anzahl von Wald und Feuer als normalfeuer und normalwald.
 
-    Falls die Werte von normalwald und normalfeuer ober der Grenze und eine der Raten |normal-half|/normal von Wald und
-    Feuer grösser als maximale kontrolle Schrittweite sind, dann ist der Unterschied zwischen den Schritten bzw. Error
-    sehr hoch, teilt man die Schrittweite durch zwei. Setzt man die Anzahl von Wald und Feuer als halffeuer und halfwald.
+    Falls die Werte von normalwald und normalfeuer über der Grenze und eine der Raten |normal-half|/normal von Wald und
+    Feuer größer als die maximale kontrolle Schrittweite sind, dann ist der Unterschied zwischen den Schritten bzw. Error
+    sehr hoch und die Schrittweite wird durch zwei geteilt. Danach wird die Anzahl von Wald und Feuer als halffeuer und halfwald
+    gesetzt.
 
-    Falls die Werte von normalwald und normalfeuer ober der Grenze und eine der Raten |normal-double|/normal kleiner als
+    Falls die Werte von normalwald und normalfeuer über der Grenze und eine der Raten |normal-double|/normal kleiner als die
     minimale kontrolle Schrittweite sind, dann ist der Unterschied zwischen den Schritten bzw. Error
-    akzeptabel, multiplitiert man die Schrittweite mit zwei. Setzt man die Anzahl von Wald und Feuer als halffeuer
-    und halfwald.
-*/
+    akzeptabel. Die Schrittweite wird mit zwei multipliziert und die die Variablen wald und feuer werden auf half feuer und half wald  gesetzt. 
+    */
     public void adaptiveStepSizeEuler(){
         this.wald = 1000;
         this.feuer = 1000;
-        double normalwald;//initialer Schritt zu initialer Schritt + initiale Schrittweite
-        double normalfeuer;//initialer Schritt zu initialer Schritt + initiale Schrittweite
-        double halfwald;//initialer Schritt zu initialer Schritt + (initiale Schrittweite)/2
-        double halffeuer;//initialer Schritt zu initialer Schritt + (initiale Schrittweite)/2
-        double doublewald;//initialer Schritt zu initialer Schritt + (initiale Schrittweite)*2
-        double doublefeuer;//initialer Schritt zu initialer Schritt + (initiale Schrittweite)*2
-        double threshold = 2000; //Setzt die Grenze
-        double minimalstepsize = 0.0001;//Falls normalwald und normalfeuer kleiner als grenze sind
+        double normalwald; // Initialer Schritt zu initialer Schritt + initiale Schrittweite
+        double normalfeuer; //Initialer Schritt zu initialer Schritt + initiale Schrittweite
+        double halfwald; //Initialer Schritt zu initialer Schritt + (initiale Schrittweite)/2
+        double halffeuer; //Initialer Schritt zu initialer Schritt + (initiale Schrittweite)/2
+        double doublewald; //Initialer Schritt zu initialer Schritt + (initiale Schrittweite)*2
+        double doublefeuer; //Initialer Schritt zu initialer Schritt + (initiale Schrittweite)*2
+        double threshold = 2000; // Setzt die Grenze
+        double minimalstepsize = 0.0001; // Falls normalwald und normalfeuer kleiner als Grenze sind
 
 
-        double initstepsize = 0.025;// Anfangszustands Schrittweite
-        double maxcontrol = 0.01;// zum Überprüfen ob der Unterschied zu gross ist
-        double mincontrol = 0.001;// zum Überprüfen ob der Unterschied ignoriert werden kann
-        double instep = 0;//Anfangszeit
+        double initstepsize = 0.025; // Anfangszustands Schrittweite
+        double maxcontrol = 0.01; // Zum überprüfen ob der Unterschied zu groß ist
+        double mincontrol = 0.001; // Zum überprüfen ob der Unterschied ignoriert werden kann
+        double instep = 0; // Anfangszeit
 
         String timer;
         DefaultCategoryDataset newdataset = new DefaultCategoryDataset();
@@ -311,17 +311,17 @@ public class Kontinuierlich {
         otherSymbols.setDecimalSeparator('.');
         DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
 
-        //Adresse der CSV-datei
+        // Adresse der CSV-datei
         String filePath = "AdaptiveEuler.csv";
 
-        //Die Datei entleeren
+        // Die Datei entleeren
         FileWriter fileWriter = null;
         try{
             fileWriter = new FileWriter(filePath);
-            //HEADER
+            // HEADER
             fileWriter.append("Time, Wald, Feuer");
             fileWriter.append("\n");
-            //Anfangszustand
+            // Anfangszustand
             fileWriter.append(instep + "," + this.wald+ "," + this.feuer);
             fileWriter.append("\n");
         }
@@ -342,33 +342,33 @@ public class Kontinuierlich {
             newdataset.addValue(this.wald, "Wald", timer);
             newdataset.addValue(this.feuer, "Feuer", timer);
 
-            reaktionEuler(this.wald, this.feuer, initstepsize);//die Werte vom initialen Schritt bis zur initialen Schrittweite
+            reaktionEuler(this.wald, this.feuer, initstepsize); // Die Werte vom initialen Schritt bis zur initialen Schrittweite
             normalwald = Math.round(this.arr[0]);
             normalfeuer = Math.round(this.arr[1]);
 
-            reaktionEuler(this.wald, this.feuer, initstepsize/2);//die Werte vom initialen Schritt bis zur Hälfte der Schrittweite
+            reaktionEuler(this.wald, this.feuer, initstepsize/2); // Die Werte vom initialen Schritt bis zur Hälfte der Schrittweite
             halfwald = Math.round(this.arr[0]);
             halffeuer = Math.round(this.arr[1]);
 
-            reaktionEuler(this.wald, this.feuer, initstepsize*2);//die Werte vom initialen Schritt bis zur doppelten Schrittweite
+            reaktionEuler(this.wald, this.feuer, initstepsize*2); // Die Werte vom initialen Schritt bis zur doppelten Schrittweite
             doublewald = Math.round(this.arr[0]);
             doublefeuer = Math.round(this.arr[1]);
 
-            if(normalwald < threshold && normalfeuer < threshold){//Unter der Grenze
+            if(normalwald < threshold && normalfeuer < threshold){ // Unter der Grenze
                 if(initstepsize != minimalstepsize){
                     initstepsize = minimalstepsize;
                 }
                 this.wald = normalwald;
                 this.feuer = normalfeuer;
             }
-            else{//Ober der Grenze
+            else{ // Über der Grenze
                 if((normalwald > threshold && normalfeuer > threshold) && (Math.abs(normalwald-halfwald)/normalwald > maxcontrol || Math.abs(normalfeuer-halffeuer)/normalfeuer > maxcontrol)){
-                    initstepsize = initstepsize/2; //Unterschied zu gross, die Schrittweite verringern
+                    initstepsize = initstepsize/2; // Unterschied zu groß, die Schrittweite verringern
                     this.wald = halfwald;
                     this.feuer = halffeuer;
                 }
                 else if((normalwald > threshold && normalfeuer > threshold) && (Math.abs(normalwald-doublewald)/normalwald < mincontrol || Math.abs(normalfeuer-doublefeuer)/normalfeuer < mincontrol)){
-                    initstepsize = initstepsize * 2; //Unterschied akzeptabel, die Schrittweite erhähen
+                    initstepsize = initstepsize * 2; // Unterschied akzeptabel, die Schrittweite erhöhen
                     this.wald = doublewald;
                     this.feuer = doublefeuer;
                 }
@@ -409,7 +409,7 @@ public class Kontinuierlich {
 
 
 
-    //Gleich mit adaptive Euler, nur wird RungeKutta Funktion genutzt.
+    // Gleich mit adaptive Euler, nur wird RungeKutta Funktion genutzt.
     public void adaptiveStepSizeRunge(){
         this.wald = 1000;
         this.feuer = 1000;
@@ -436,10 +436,10 @@ public class Kontinuierlich {
         otherSymbols.setDecimalSeparator('.');
         DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
 
-        //Adresse der CSV-datei
+        // Adresse der CSV-datei
         String filePath = "AdaptiveRunge.csv";
 
-        //Die Datei entleeren
+        // Die Datei entleeren
         FileWriter fileWriter = null;
         try{
             fileWriter = new FileWriter(filePath);
@@ -467,6 +467,7 @@ public class Kontinuierlich {
             newdataset.addValue(this.wald, "Wald", timer);
             newdataset.addValue(this.feuer, "Feuer", timer);
 
+            // RunkeKutta statt Euler
             reaktionRungeKutta(this.wald, this.feuer, initstepsize);
             normalwald = Math.round(this.arr[0]);
             normalfeuer = Math.round(this.arr[1]);
