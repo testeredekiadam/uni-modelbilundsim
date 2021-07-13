@@ -112,8 +112,8 @@ public class Kontinuierlich {
 
 
             reaktionEuler(this.wald, this.feuer, this.step);//reaktion Forward Euler
-            this.wald = this.arr[0];
-            this.feuer = this.arr[1];
+            this.wald = Math.round(this.arr[0]);
+            this.feuer = Math.round(this.arr[1]);
             instep += step;
 
 
@@ -234,8 +234,8 @@ public class Kontinuierlich {
             newdataset.addValue(this.wald, "Wald", timer);
             newdataset.addValue(this.feuer, "Feuer", timer);
             reaktionRungeKutta(this.wald, this.feuer, this.step);//reaktion runge kutta method
-            this.wald = this.arr[0];
-            this.feuer = this.arr[1];
+            this.wald = Math.round(this.arr[0]);
+            this.feuer = Math.round(this.arr[1]);
             instep += step;
 
             try{
@@ -265,25 +265,43 @@ public class Kontinuierlich {
 
 
 
-    //Adaptive schrittweite methoden
+    /*Adaptive schrittweite methoden
 
+    Man kalkuliert die Werte vom initialen Schritt bis zur initialen Schrittweite (normalfeuer, normalwald),
+    bis zur Hälfte der Schrittweite (halfwald, halffeuer)
+    und bis zur doppelten Schrittweite (doublewald, doublefeuer).
+    Man definiert dann eine Grenze, drei Schrittweite (minimale Schrittweite, minimum
+    kontrolle Schrittweite, maximum kontrolle Schrittweite).
+
+    Falls die Werte von normalwald und normalfeuer unter der Grenze sind,
+    setzt man die Schrittweite als minimale Schrittweite und die Anzahl von Wald und Feuer als normalfeuer und normalwald.
+
+    Falls die Werte von normalwald und normalfeuer ober der Grenze und eine der Raten |normal-half|/normal von Wald und
+    Feuer grösser als maximale kontrolle Schrittweite sind, dann ist der Unterschied zwischen den Schritten bzw. Error
+    sehr hoch, teilt man die Schrittweite durch zwei. Setzt man die Anzahl von Wald und Feuer als halffeuer und halfwald.
+
+    Falls die Werte von normalwald und normalfeuer ober der Grenze und eine der Raten |normal-double|/normal kleiner als
+    minimale kontrolle Schrittweite sind, dann ist der Unterschied zwischen den Schritten bzw. Error
+    akzeptabel, multiplitiert man die Schrittweite mit zwei. Setzt man die Anzahl von Wald und Feuer als halffeuer
+    und halfwald.
+*/
     public void adaptiveStepSizeEuler(){
         this.wald = 1000;
         this.feuer = 1000;
-        double normalwald;
-        double normalfeuer;
-        double halfwald;
-        double halffeuer;
-        double doublewald;
-        double doublefeuer;
-        double genauigkeit = 5000;
-        double minimalstepsize = 0.0001;
+        double normalwald;//initialer Schritt zu initialer Schritt + initiale Schrittweite
+        double normalfeuer;//initialer Schritt zu initialer Schritt + initiale Schrittweite
+        double halfwald;//initialer Schritt zu initialer Schritt + (initiale Schrittweite)/2
+        double halffeuer;//initialer Schritt zu initialer Schritt + (initiale Schrittweite)/2
+        double doublewald;//initialer Schritt zu initialer Schritt + (initiale Schrittweite)*2
+        double doublefeuer;//initialer Schritt zu initialer Schritt + (initiale Schrittweite)*2
+        double threshold = 2000; //Setzt die Grenze
+        double minimalstepsize = 0.0001;//Falls normalwald und normalfeuer kleiner als grenze sind
 
 
-        double initstepsize = 0.025;
-        double maxcontrol = 0.01;
-        double mincontrol = 0.0001;
-        double instep = 0;
+        double initstepsize = 0.025;// Anfangszustands Schrittweite
+        double maxcontrol = 0.01;// zum Überprüfen ob der Unterschied zu gross ist
+        double mincontrol = 0.001;// zum Überprüfen ob der Unterschied ignoriert werden kann
+        double instep = 0;//Anfangszeit
 
         String timer;
         DefaultCategoryDataset newdataset = new DefaultCategoryDataset();
@@ -324,33 +342,33 @@ public class Kontinuierlich {
             newdataset.addValue(this.wald, "Wald", timer);
             newdataset.addValue(this.feuer, "Feuer", timer);
 
-            reaktionEuler(this.wald, this.feuer, initstepsize);
-            normalwald = this.arr[0];
-            normalfeuer = this.arr[1];
+            reaktionEuler(this.wald, this.feuer, initstepsize);//die Werte vom initialen Schritt bis zur initialen Schrittweite
+            normalwald = Math.round(this.arr[0]);
+            normalfeuer = Math.round(this.arr[1]);
 
-            reaktionEuler(this.wald, this.feuer, initstepsize/2);
-            halfwald = this.arr[0];
-            halffeuer = this.arr[1];
+            reaktionEuler(this.wald, this.feuer, initstepsize/2);//die Werte vom initialen Schritt bis zur Hälfte der Schrittweite
+            halfwald = Math.round(this.arr[0]);
+            halffeuer = Math.round(this.arr[1]);
 
-            reaktionEuler(this.wald, this.feuer, initstepsize*2);
-            doublewald = this.arr[0];
-            doublefeuer = this.arr[1];
+            reaktionEuler(this.wald, this.feuer, initstepsize*2);//die Werte vom initialen Schritt bis zur doppelten Schrittweite
+            doublewald = Math.round(this.arr[0]);
+            doublefeuer = Math.round(this.arr[1]);
 
-            if(normalwald < genauigkeit && normalfeuer < genauigkeit){
+            if(normalwald < threshold && normalfeuer < threshold){//Unter der Grenze
                 if(initstepsize != minimalstepsize){
                     initstepsize = minimalstepsize;
                 }
                 this.wald = normalwald;
                 this.feuer = normalfeuer;
             }
-            else{
-                if((normalwald > genauigkeit && normalfeuer > genauigkeit) && (Math.abs(normalwald-halfwald)/normalwald > maxcontrol || Math.abs(normalfeuer-halffeuer)/normalfeuer > maxcontrol)){
-                    initstepsize = initstepsize/2; //Error too large, decrease stepsize
+            else{//Ober der Grenze
+                if((normalwald > threshold && normalfeuer > threshold) && (Math.abs(normalwald-halfwald)/normalwald > maxcontrol || Math.abs(normalfeuer-halffeuer)/normalfeuer > maxcontrol)){
+                    initstepsize = initstepsize/2; //Unterschied zu gross, die Schrittweite verringern
                     this.wald = halfwald;
                     this.feuer = halffeuer;
                 }
-                else if((normalwald > genauigkeit && normalfeuer > genauigkeit) && (Math.abs(normalwald-doublewald)/normalwald < mincontrol || Math.abs(normalfeuer-doublefeuer)/normalfeuer < mincontrol)){
-                    initstepsize = initstepsize * 2; //Error acceptable, increase stepsize
+                else if((normalwald > threshold && normalfeuer > threshold) && (Math.abs(normalwald-doublewald)/normalwald < mincontrol || Math.abs(normalfeuer-doublefeuer)/normalfeuer < mincontrol)){
+                    initstepsize = initstepsize * 2; //Unterschied akzeptabel, die Schrittweite erhähen
                     this.wald = doublewald;
                     this.feuer = doublefeuer;
                 }
@@ -391,7 +409,7 @@ public class Kontinuierlich {
 
 
 
-
+    //Gleich mit adaptive Euler, nur wird RungeKutta Funktion genutzt.
     public void adaptiveStepSizeRunge(){
         this.wald = 1000;
         this.feuer = 1000;
@@ -401,13 +419,13 @@ public class Kontinuierlich {
         double halffeuer;
         double doublewald;
         double doublefeuer;
-        double genauigkeit = 5000;
+        double genauigkeit = 4000;
         double minimalstepsize = 0.0001;
 
 
         double initstepsize = 0.025;
         double maxcontrol = 0.01;
-        double mincontrol = 0.0001;
+        double mincontrol = 0.001;
         double instep = 0;
 
         String timer;
@@ -450,16 +468,16 @@ public class Kontinuierlich {
             newdataset.addValue(this.feuer, "Feuer", timer);
 
             reaktionRungeKutta(this.wald, this.feuer, initstepsize);
-            normalwald = this.arr[0];
-            normalfeuer = this.arr[1];
+            normalwald = Math.round(this.arr[0]);
+            normalfeuer = Math.round(this.arr[1]);
 
             reaktionRungeKutta(this.wald, this.feuer, initstepsize/2);
-            halfwald = this.arr[0];
-            halffeuer = this.arr[1];
+            halfwald = Math.round(this.arr[0]);
+            halffeuer = Math.round(this.arr[1]);
 
             reaktionRungeKutta(this.wald, this.feuer, initstepsize*2);
-            doublewald = this.arr[0];
-            doublefeuer = this.arr[1];
+            doublewald = Math.round(this.arr[0]);
+            doublefeuer = Math.round(this.arr[1]);
 
             if(normalwald < genauigkeit && normalfeuer < genauigkeit){
                 if(initstepsize != minimalstepsize){
@@ -470,12 +488,12 @@ public class Kontinuierlich {
             }
             else{
                 if((normalwald > genauigkeit && normalfeuer > genauigkeit) && (Math.abs(normalwald-halfwald)/normalwald > maxcontrol || Math.abs(normalfeuer-halffeuer)/normalfeuer > maxcontrol)){
-                    initstepsize = initstepsize/2; //Error too large, decrease stepsize
+                    initstepsize = initstepsize/2;
                     this.wald = halfwald;
                     this.feuer = halffeuer;
                 }
                 else if((normalwald > genauigkeit && normalfeuer > genauigkeit) && (Math.abs(normalwald-doublewald)/normalwald < mincontrol || Math.abs(normalfeuer-doublefeuer)/normalfeuer < mincontrol)){
-                    initstepsize = initstepsize * 2; //Error acceptable, increase stepsize
+                    initstepsize = initstepsize * 2;
                     this.wald = doublewald;
                     this.feuer = doublefeuer;
                 }
@@ -511,10 +529,6 @@ public class Kontinuierlich {
         }
         this.dataset = newdataset;
     }
-
-
-
-
 
 }
 
